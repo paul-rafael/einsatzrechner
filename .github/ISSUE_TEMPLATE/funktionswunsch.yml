@@ -1,0 +1,17 @@
+name: Funktionswunsch
+description: Idee für eine neue Funktion oder Verbesserung
+title: "[Wunsch] "
+labels: ["funktionswunsch"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Worum geht es?
+      description: Welches Problem soll gelöst werden bzw. was fehlt?
+    validations:
+      required: true
+  - type: textarea
+    id: vorschlag
+    attributes:
+      label: Vorschlag
+      description: Wie könnte es aussehen oder funktionieren?

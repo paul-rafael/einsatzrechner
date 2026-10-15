@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gehaltsprüfer</title>
+<meta name="description" content="Den eigenen Lohn nachrechnen – Brutto, Netto, Stunden. Für Österreich.">
+<meta name="author" content="Paul-Rafael Hasan-Man">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Crect x='14' y='18' width='36' height='32' rx='4' fill='none' stroke='white' stroke-width='4'/%3E%3Cpath d='M14 27h36M24 13v9M40 13v9' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M25 39l5 5 9-10' fill='none' stroke='%23a5b4fc' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gehaltsprüfer">
+<meta property="og:description" content="Den eigenen Lohn nachrechnen – Brutto, Netto, Stunden. Für Österreich.">
+<meta property="og:url" content="https://paul-rafael.github.io/gehaltspruefer/">
+<meta property="og:image" content="https://paul-rafael.github.io/gehaltspruefer/docs/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Fest gespeicherte Einstellungen (werden vom Einstellungs-Fenster überschrieben) -->
+<script id="embedded-settings" type="application/json">{}</script>
+<script>(function(){try{var e=JSON.parse(document.getElementById("embedded-settings").textContent||"{}"),l=JSON.parse(localStorage.getItem("lzr_settings")||"{}"),src=(e._saved||0)>(l._saved||0)?e:l;var t=src.theme||"dark";var d=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.setAttribute("data-theme",d?"dark":"light")}catch(e){}})()</script>
+<style>
+:root{--bg:#ffffff;--card:#ffffff;--text:#0a0a0a;--muted:#525252;--faint:#a3a3a3;--border:#e5e5e5;--border2:#d4d4d4;--sep:#f5f5f5;--strong:#171717;--shadow:rgba(0,0,0,.12);--accent:#5b5bd6;--accent-bg:rgba(91,91,214,.07);--accent-line:rgba(91,91,214,.45);--neg:#c2410c;--day-work:#ededed;--day-work-b:#c8c8c8;--day-office:#f7f7f7;--day-office-b:#e0e0e0;--hatch:repeating-linear-gradient(135deg,rgba(0,0,0,.05) 0 4px,transparent 4px 8px);color-scheme:light;}
+:root[data-theme="dark"]{--bg:#000000;--card:#0a0a0a;--text:#ededed;--muted:#a1a1a1;--faint:#666666;--border:#1f1f1f;--border2:#2e2e2e;--sep:#141414;--strong:#e5e5e5;--shadow:rgba(0,0,0,.7);--accent:#a5b4fc;--accent-bg:rgba(165,180,252,.08);--accent-line:rgba(165,180,252,.4);--neg:#f2a07b;--day-work:#1a1a1a;--day-work-b:#333333;--day-office:#0f0f0f;--day-office-b:#262626;--hatch:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 4px,transparent 4px 8px);color-scheme:dark;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;}
+.wrap{max-width:900px;margin:0 auto;padding:2rem 1rem;}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.topbar-btns{display:flex;gap:6px;flex-wrap:wrap;}
+h1{font-size:22px;font-weight:600;margin-bottom:2px;}
+.sub{color:var(--muted);font-size:13px;margin-bottom:1.5rem;}
+.btn{border:1px solid var(--border2);background:var(--card);color:var(--text);border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit;}
+.btn:hover{border-color:var(--faint);}
+.btn .ico{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:6px;}
+.topbar-btns .btn{display:inline-flex;align-items:center;}
+.btn.primary{background:var(--strong);color:var(--card);border-color:var(--strong);}
+.btn.danger:hover{border-color:var(--neg);color:var(--neg);}
+.btn.small{padding:4px 10px;font-size:12px;}
+.toggle{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border2);background:var(--card);color:var(--muted);border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;}
+.toggle.on{background:var(--text);border-color:var(--text);color:var(--bg);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:12px;}
+.grid5{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;}
+label.field{display:block;}
+label.field span{display:block;font-size:12px;color:var(--muted);margin-bottom:3px;}
+select,input[type=number],input[type=text]{width:100%;border:1px solid var(--border2);border-radius:6px;padding:6px 8px;font-size:13px;background:var(--card);color:var(--text);outline:none;font-family:inherit;}
+select:focus,input:focus{border-color:var(--muted);}
+input[type=number]{text-align:right;}
+.hint{font-size:12px;color:var(--faint);margin-top:8px;}
+.subsec{border-top:1px solid var(--sep);margin-top:14px;padding-top:14px;}
+/* Ruhezeit-Topf */
+.pot{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--bg);}
+.pot-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.pot-head .pot-title{font-size:12px;color:var(--muted);}
+.pot-head .pot-val{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em;}
+.pot-head .pot-val small{font-size:12px;font-weight:500;color:var(--faint);margin-left:3px;}
+.pot-bar{height:10px;border-radius:999px;background:var(--sep);overflow:hidden;display:flex;}
+.pot-bar .fill{background:var(--accent);transition:width .3s;}
+.pot-bar .used{background:repeating-linear-gradient(135deg,var(--accent-line) 0 4px,var(--accent-bg) 4px 8px);transition:width .3s;}
+.pot-flow{display:grid;grid-template-columns:repeat(4,1fr);margin-top:12px;border-top:1px solid var(--border);padding-top:10px;}
+.pot-flow div{padding:0 10px;border-left:1px solid var(--border);}
+.pot-flow div:first-child{padding-left:0;border-left:none;}
+.pot-flow span{display:block;font-size:11px;color:var(--faint);margin-bottom:2px;}
+.pot-flow b{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
+.pot-flow b.pos{color:var(--text);}.pot-flow b.neg{color:var(--muted);}
+.pot-note{font-size:11px;color:var(--faint);margin-top:10px;line-height:1.45;}
+.pot-legend{display:flex;gap:12px;margin-top:6px;font-size:11px;color:var(--faint);}
+.pot-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:4px;}
+@media (max-width:600px){.pot-flow{grid-template-columns:1fr 1fr;row-gap:10px;}.pot-flow div:nth-child(3){padding-left:0;border-left:none;}}
+.stat-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.stat{background:var(--sep);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--muted);}
+.stat strong{color:var(--text);font-weight:600;}
+.stat.ruhe strong{color:var(--accent);}
+.cal-hdr-row,.cal-row{display:grid;grid-template-columns:32px repeat(7,1fr);gap:3px;margin-bottom:3px;}
+.cal-hdr-cell{font-size:11px;font-weight:500;text-align:center;padding:3px 0;color:var(--muted);}
+.cal-hdr-cell.we{color:var(--faint);}
+.kw-cell{display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--faint);font-weight:500;}
+
+/* Day buttons */
+.day-btn{width:100%;height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);background:var(--card);cursor:pointer;padding:2px;position:relative;font-family:inherit;}
+.day-btn:hover{border-color:var(--faint);}
+.day-btn.open{border:2px solid var(--strong);}
+.day-btn.paste-target{border:2px dashed var(--accent-line);background:var(--accent-bg);}
+.day-btn .lmark{position:absolute;top:2px;right:4px;font-size:8px;line-height:1;font-weight:700;letter-spacing:.03em;opacity:.75;color:var(--strong);}
+.land-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid var(--border);}
+.land-row select{width:auto;padding:4px 8px;font-size:12px;}
+.day-btn.pv-on{outline:2px solid var(--accent);outline-offset:1px;}
+.day-btn.pv-off{outline:2px dashed var(--faint);outline-offset:1px;}
+.day-btn .dnum{font-size:11px;color:var(--faint);line-height:1;margin-bottom:1px;}
+.day-btn .dinfo{font-size:10px;line-height:1;font-weight:500;color:var(--faint);}
+.day-btn .dbadge{font-size:9px;line-height:1;margin-top:2px;max-width:92%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--faint);}
+
+.day-btn.buero,.day-btn.homeoffice,.ld-buero,.ld-homeoffice{background:var(--day-office);border-color:var(--day-office-b);}
+.day-btn.buero .dnum,.day-btn.buero .dinfo,.day-btn.homeoffice .dnum,.day-btn.homeoffice .dinfo,.day-btn.homeoffice .dbadge{color:var(--muted);}
+.day-btn.homeoffice,.ld-homeoffice{border-style:dotted;}
+.day-btn.montage,.day-btn.reise,.ld-montage,.ld-reise{background:var(--day-work);border-color:var(--day-work-b);}
+.day-btn.montage .dnum,.day-btn.montage .dinfo,.day-btn.reise .dnum,.day-btn.reise .dinfo{color:var(--text);}
+.day-btn.reise,.ld-reise{border-style:dashed;}
+/* gearbeitet an Sa/So/Feiertag (Zuschlag): dezenter Akzent */
+.day-btn.sa,.day-btn.so,.day-btn.ft,.ld-so{border-color:var(--accent-line);background-image:linear-gradient(var(--accent-bg),var(--accent-bg));}
+.day-btn.sa .dnum,.day-btn.so .dnum,.day-btn.ft .dnum{color:var(--accent);}
+.day-btn.feiertag,.ld-feiertag{border-color:var(--border2);}
+.day-btn.feiertag .dnum,.day-btn.feiertag .dinfo,.day-btn.feiertag .dbadge{color:var(--accent);}
+.day-btn.za,.day-btn.ruhe,.ld-za,.ld-ruhe{background:var(--hatch),var(--card);border-color:var(--day-office-b);}
+.day-btn.za .dnum,.day-btn.za .dinfo,.day-btn.za .dbadge,.day-btn.ruhe .dinfo,.day-btn.ruhe .dbadge{color:var(--muted);}
+.day-btn.ruhe,.ld-ruhe{border-color:var(--accent-line);}
+.day-btn.ruhe .dnum{color:var(--accent);}
+.ld-frei{background:var(--card);border-color:var(--border2);}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--sep);}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);}
+.leg-dot{width:12px;height:12px;border-radius:3px;border:1px solid;}
+
+/* Dropdown — position:fixed, placed via JS using getBoundingClientRect() only (no scroll offset) */
+.dropdown{display:none;position:fixed;z-index:9999;background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:12px;width:240px;box-shadow:0 8px 24px var(--shadow);}
+.dd-group-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);margin:6px 0 3px;}
+.dd-label{display:flex;align-items:center;gap:8px;cursor:pointer;padding:3px 0;font-size:13px;color:var(--text);}
+.dd-label input{accent-color:var(--strong);}
+.dd-sep{border:none;border-top:1px solid var(--sep);margin:8px 0;}
+.dd-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.dd-row span{font-size:12px;color:var(--muted);}
+.dd-row input{width:64px;font-size:12px;text-align:right;border:1px solid var(--border2);border-radius:5px;padding:3px 6px;}
+.dd-info{font-size:11px;color:var(--faint);margin-top:6px;line-height:1.4;}
+
+/* Copy bar */
+.copy-bar{display:none;background:var(--accent-bg);border:1px solid var(--accent-line);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--text);align-items:center;gap:10px;flex-wrap:wrap;}
+.copy-bar.active{display:flex;}
+.copy-bar strong{font-weight:600;}
+.copy-bar button{border:1px solid var(--border2);background:var(--card);color:var(--text);border-radius:5px;padding:3px 10px;font-size:12px;cursor:pointer;}
+.copy-bar button:hover{border-color:var(--faint);}
+.dd-copy-btn{width:100%;margin-top:8px;border:1px solid var(--border2);background:var(--sep);color:var(--text);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;text-align:left;}
+.dd-copy-btn:hover{border-color:var(--faint);}
+
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;padding:4px 12px 4px 0;font-size:11px;font-weight:500;color:var(--faint);border-bottom:1px solid var(--border);}
+th.r,td.r{text-align:right;}
+td{padding:6px 12px 6px 0;font-size:13px;border-bottom:1px solid var(--sep);}
+td.mono{font-family:monospace;font-size:12px;color:var(--faint);}
+.za-box{display:inline-flex;align-items:center;gap:8px;border:1px solid;border-radius:6px;padding:8px 14px;font-size:13px;margin-top:8px;}
+.za-box.pos{background:var(--sep);border-color:var(--border);color:var(--text);}
+.za-box.neg{background:var(--sep);border-color:var(--border);color:var(--neg);}
+.extras-row{display:grid;grid-template-columns:1fr 110px 150px 28px;gap:6px;align-items:center;margin-bottom:6px;}
+.extras-row input[type=text]{padding:5px 8px;}
+.extras-row select{padding:5px 6px;font-size:12px;}
+.btn-add-extra{border:1px dashed var(--border2);background:var(--bg);color:var(--muted);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;width:100%;margin-top:6px;text-align:left;}
+.btn-add-extra:hover{background:var(--sep);border-color:var(--faint);color:var(--strong);}
+.btn-del-extra{border:none;background:none;color:var(--border2);cursor:pointer;font-size:18px;line-height:1;padding:0;width:28px;text-align:center;}
+.btn-del-extra:hover{color:var(--neg);}
+.bn-sep{border:none;border-top:1px solid var(--sep);margin:8px 0;}
+.bn-sep.strong{border-color:var(--border);margin:10px 0;}
+.bn-row{display:flex;justify-content:space-between;align-items:baseline;padding:2px 0;}
+.bn-row.indent{padding-left:16px;}
+.bn-label{font-size:13px;color:var(--muted);}.bn-label.bold{font-weight:600;color:var(--text);font-size:14px;}.bn-label.large{font-size:15px;}
+.bn-val{font-size:13px;}.bn-val.bold{font-weight:600;font-size:14px;}.bn-val.large{font-size:15px;}.bn-val.neg{color:var(--neg);}
+.detail-row.so,.detail-row.sa{background:var(--accent-bg);}
+.detail-row.za,.detail-row.ruhe{background:var(--sep);}
+.week-row td{background:var(--sep);font-weight:600;font-size:12px;border-bottom:2px solid var(--border);}
+.detail-td{padding:4px 10px 4px 0;text-align:right;color:var(--faint);}
+.c-pos{color:var(--text);font-weight:500;}.c-neg{color:var(--neg);font-weight:500;}.c-ruhe{color:var(--accent);font-weight:500;}
+#overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;}
+
+.app-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);font-size:12px;color:var(--faint);text-align:center;}
+.app-foot a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border2);}
+.app-foot a:hover{color:var(--text);}
+
+/* Modal (Einstellungen / Datensätze) */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10000;align-items:flex-start;justify-content:center;padding:4vh 16px;overflow-y:auto;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;width:100%;max-width:560px;padding:1.2rem 1.3rem;box-shadow:0 20px 50px var(--shadow);}
+.modal h2{font-size:17px;font-weight:600;margin-bottom:4px;}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.ds-list{margin-top:10px;}
+.ds-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--sep);flex-wrap:wrap;}
+.ds-item .ds-name{font-weight:500;}
+.ds-item .ds-meta{font-size:11px;color:var(--faint);}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--strong);color:var(--card);padding:8px 16px;border-radius:8px;font-size:13px;z-index:10001;opacity:0;transition:opacity .2s;pointer-events:none;}
+.toast.show{opacity:1;}
+/* Arbeitsmodell */
+.turnus{border:1px solid var(--border);border-radius:8px;margin-bottom:12px;background:var(--bg);}
+.turnus-head{display:flex;align-items:center;gap:10px;padding:8px 10px;flex-wrap:wrap;}
+.turnus-title{font-size:12px;font-weight:600;color:var(--muted);}
+.preset-row{display:flex;gap:4px;flex-wrap:wrap;flex:1;}
+.preset{border:1px solid var(--border2);background:var(--card);color:var(--text);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;font-variant-numeric:tabular-nums;}
+.preset:hover{border-color:var(--faint);}
+.preset.active{background:var(--text);border-color:var(--text);color:var(--bg);}
+.btn.ghost{background:transparent;}
+.turnus-body{padding:4px 12px 12px;border-top:1px solid var(--border);padding-top:12px;}
+.turnus-body .grid5{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));}
+input[type=date]{width:100%;border:1px solid var(--border2);border-radius:6px;padding:5px 8px;font-size:13px;background:var(--card);color:var(--text);outline:none;font-family:inherit;}
+@media (max-width:600px){.extras-row{grid-template-columns:1fr 80px 1fr 28px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>Gehaltsprüfer</h1>
+      <p class="sub">Entwickelt von Paul-Rafael Hasan-Man</p>
+    </div>
+    <div class="topbar-btns">
+      <button class="btn" onclick="openModal('ds-modal')"><svg class="ico" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h8V3"/><rect x="8" y="13" width="8" height="6"/></svg>Datensätze</button>
+      <button class="btn" onclick="openSettings()"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Einstellungen</button>
+      <button class="btn" id="theme-btn" onclick="cycleTheme()" title="Darstellung wechseln"></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+      <p class="section-label" style="margin:0;">Grunddaten</p>
+      <button class="toggle" id="lehrling-btn" onclick="toggleLehrling()">Lehrling</button>
+    </div>
+    <div class="grid5">
+      <label class="field"><span>Monat</span><select id="monat"></select></label>
+      <label class="field"><span>Jahr</span><select id="jahr"></select></label>
+      <label class="field"><span id="grundgehalt-label">Grundgehalt (€/Mon)</span><input type="number" id="grundgehalt" value="0" step="10"></label>
+      <label class="field"><span id="stundensatz-label">Stundensatz (€/h)</span><input type="number" id="stundensatz" value="0" step="0.01" readonly tabindex="-1" style="background:var(--sep);color:var(--muted);cursor:default;" title="Wird automatisch berechnet: Grundgehalt / Stundenteiler"></label>
+      <label class="field"><span>Taggeld (€/Tag)</span><input type="number" id="taggeld" value="0" step="1"></label>
+    </div>
+    <div style="border-top:1px solid var(--sep);margin-top:14px;padding-top:14px;">
+      <p class="section-label" style="margin-bottom:10px;">ZA-Stundentopf</p>
+      <div class="grid5">
+        <label class="field"><span>Topf-Maximum (h, 0 = keins)</span><input type="number" id="zaTopfMax" value="0" step="1" min="0"></label>
+        <label class="field"><span>Aktueller Stand (h)</span><input type="number" id="zaTopfStart" value="0" step="0.25" min="-999"></label>
+      </div>
+      <div id="za-gauge-wrap" style="margin-top:12px;"></div>
+    </div>
+    <div class="subsec">
+      <p class="section-label" style="margin-bottom:10px;">Ruhezeit-Topf</p>
+      <div class="grid5">
+        <label class="field"><span>Aktueller Stand (h)</span><input type="number" id="ruheStart" value="0" step="0.25" min="0"></label>
+      </div>
+      <div id="ruhe-wrap" style="margin-top:12px;"></div>
+    </div>
+    <div style="border-top:1px solid var(--sep);margin-top:14px;padding-top:14px;">
+      <p class="section-label" style="margin-bottom:10px;">Sonderzahlungen</p>
+      <div class="grid5">
+        <label class="field">
+          <span>Urlaubsgeld</span>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:2px;">
+            <input type="checkbox" id="urlaubsgeldAktiv" style="width:auto;accent-color:var(--strong);cursor:pointer;">
+            <span style="font-size:12px;color:var(--muted);">diesen Monat</span>
+          </div>
+        </label>
+        <label class="field" id="urlaubsgeld-betrag-field" style="display:none;">
+          <span>Betrag (€)</span>
+          <input type="number" id="urlaubsgeldBetrag" value="0" step="10" min="0">
+        </label>
+        <div id="urlaubsgeld-info" style="display:none;font-size:11px;color:var(--faint);padding-top:18px;line-height:1.5;">
+          Steuerbegünstigt bis Jahressechstel (§67 EStG). Restbetrag darüber wird normal versteuert.
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--sep);margin-top:14px;padding-top:14px;">
+      <p class="section-label" style="margin-bottom:8px;">Prämien &amp; Zuschläge</p>
+      <div style="display:grid;grid-template-columns:1fr 110px 150px 28px;gap:6px;margin-bottom:4px;">
+        <span style="font-size:11px;color:var(--faint);font-weight:500;">Bezeichnung</span>
+        <span style="font-size:11px;color:var(--faint);font-weight:500;">Betrag (€)</span>
+        <span style="font-size:11px;color:var(--faint);font-weight:500;">Steuer</span>
+        <span></span>
+      </div>
+      <div id="extras-list"></div>
+      <button class="btn-add-extra" onclick="addExtra()">+ Posten hinzufügen</button>
+    </div>
+    <p class="hint" id="lehrling-hint" style="display:none;"></p>
+    <p class="hint" id="lz-label"></p>
+  </div>
+
+  <div class="card" id="cal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <p class="section-label" id="cal-title" style="margin:0;"></p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:11px;color:var(--faint);">Tag anklicken zum Bearbeiten</span>
+        <button class="btn small danger" id="clear-cal-btn" onclick="clearCalendar()">Alle Einträge löschen</button>
+      </div>
+    </div>
+    <div class="turnus" id="turnus-panel">
+      <div class="turnus-head">
+        <span class="turnus-title">Arbeitsmodell eintragen</span>
+        <div class="preset-row" id="preset-row"></div>
+        <button class="btn small ghost" id="t-opt-btn" onclick="toggleTurnusOpts()">Optionen</button>
+      </div>
+      <div class="land-row">
+        <span class="turnus-title">Einsatzland</span>
+        <select id="land-sel" onchange="setEinsatzland()"></select>
+        <select id="region-sel" onchange="setEinsatzland()" style="display:none;"></select>
+        <button class="btn small ghost" onclick="landAufMonat()" title="Setzt das Einsatzland für alle Montage-Tage im angezeigten Monat">auf alle Montage-Tage im Monat anwenden</button>
+        <span class="hint" style="margin:0;" id="land-hint"></span>
+      </div>
+      <div class="turnus-body" id="turnus-opts" style="display:none;">
+        <div class="grid5">
+          <label class="field"><span>Eigenes Modell: Tage Arbeit</span><input type="number" id="t-customOn" min="1" step="1"></label>
+          <label class="field"><span>Tage frei</span><input type="number" id="t-customOff" min="0" step="1"></label>
+          <label class="field"><span>Std. pro Arbeitstag</span><input type="number" id="t-stunden" min="0" step="0.25"></label>
+        </div>
+        <label class="dd-label" style="margin-top:10px;"><input type="checkbox" id="t-reise"> Erster &amp; letzter Arbeitstag = An-/Abreise (Montage + Reise)</label>
+        <div class="grid5" id="t-reise-fields" style="margin-top:6px;">
+          <label class="field"><span>Reisetag: Arbeit (h)</span><input type="number" id="t-reiseArbeit" min="0" step="0.25"></label>
+          <label class="field"><span>Reisetag: Reisezeit (h)</span><input type="number" id="t-reisezeit" min="0" step="0.25"></label>
+        </div>
+        <label class="dd-label" style="margin-top:10px;"><input type="checkbox" id="t-za"> Freie Werktage als ZA buchen (zuerst aus Ruhezeit-Topf) — gilt für 5/2 und eigenes Modell</label>
+        <p class="hint">10/4 und 6/1/4/3: Sa/So im Arbeitsblock zählen als normale Arbeitstage (wie Mo–Do) – nur Montagezulagen, keine Zuschläge, keine Ruhezeit. Die 4 freien Tage ersetzen das Wochenende, es wird keine ZA abgezogen.</p>
+      </div>
+    </div>
+    <div class="copy-bar" id="place-bar">
+      <span>Modell <strong id="place-label"></strong> — auf den ersten Arbeitstag klicken</span>
+      <button onclick="cancelPlace()">Abbrechen</button>
+    </div>
+    <div class="cal-hdr-row" id="cal-hdr"></div>
+    <div id="cal-grid"></div>
+
+    <!-- Copy bar shown when a day is copied -->
+    <div class="copy-bar" id="copy-bar">
+      <span><strong id="copy-label"></strong> kopiert — auf Tage klicken zum Einfügen</span>
+      <button onclick="clearCopy()">Abbrechen</button>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot ld-frei"></div>Frei</div>
+      <div class="leg-item"><div class="leg-dot ld-feiertag"></div>Feiertag</div>
+      <div class="leg-item"><div class="leg-dot ld-buero"></div>Büro</div>
+      <div class="leg-item"><div class="leg-dot ld-homeoffice"></div>Homeoffice</div>
+      <div class="leg-item"><div class="leg-dot ld-montage"></div>Montage</div>
+      <div class="leg-item"><div class="leg-dot ld-reise"></div>Montage + Reise</div>
+      <div class="leg-item"><div class="leg-dot ld-so"></div>Sa / So / Feiertag (Zuschlag)</div>
+      <div class="leg-item"><div class="leg-dot ld-za"></div>ZA</div>
+      <div class="leg-item"><div class="leg-dot ld-ruhe"></div>Ruhezeit</div>
+    </div>
+  </div>
+
+  <div id="overlay" onclick="closeDD()"></div>
+  <div class="dropdown" id="dropdown">
+    <div id="dd-content"></div>
+  </div>
+
+  <div class="card">
+    <p class="section-label">Lohnzettel</p>
+    <p id="lz-label2" style="font-size:12px;color:var(--faint);margin-bottom:16px;"></p>
+    <div id="lz-table"></div>
+    <div id="za-box" class="za-box" style="display:none;"></div>
+    <div id="bn-section" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);"></div>
+  </div>
+
+  <div class="card" id="detail-card" style="display:none;">
+    <p class="section-label">Stundenübersicht — mit Wochensummen</p>
+    <div id="detail-table" style="overflow-x:auto;"></div>
+  </div>
+
+  <footer class="app-foot">
+    <span>Gehaltsprüfer <span id="app-version"></span></span>
+    <span>·</span>
+    <span>Entwickelt von Paul-Rafael Hasan-Man</span>
+    <span>·</span>
+    <a href="https://github.com/paul-rafael/gehaltspruefer" target="_blank" rel="noopener">Quellcode auf GitHub</a>
+    <span>·</span>
+    <span>Näherungswerte (Stand 2026) – keine Lohn- oder Steuerberatung</span>
+  </footer>
+</div>
+
+<!-- Datensätze -->
+<div class="modal-bg" id="ds-modal" onclick="if(event.target===this)closeModal('ds-modal')">
+  <div class="modal">
+    <h2>Datensätze</h2>
+    <p class="hint" style="margin:0 0 12px;">Speichert den aktuellen Monat inkl. Kalender, Grunddaten, Töpfe und Prämien im Browser dieses Geräts.</p>
+    <div style="display:flex;gap:6px;">
+      <input type="text" id="ds-name" placeholder="Name, z.B. Oktober 2026">
+      <button class="btn primary" onclick="saveDataset()">Speichern</button>
+    </div>
+    <div class="ds-list" id="ds-list"></div>
+    <div class="subsec" style="display:flex;gap:6px;flex-wrap:wrap;">
+      <button class="btn small" onclick="exportJSON()">Als Datei exportieren</button>
+      <button class="btn small" onclick="document.getElementById('ds-file').click()">Datei importieren</button>
+      <input type="file" id="ds-file" accept=".json,application/json" style="display:none;" onchange="importJSON(this)">
+      <button class="btn small" onclick="nextMonth()" title="ZA- und Ruhezeit-Endstand als Startwert übernehmen">→ Folgemonat mit Salden starten</button>
+    </div>
+    <div class="modal-foot"><button class="btn" onclick="closeModal('ds-modal')">Schließen</button></div>
+  </div>
+</div>
+
+<!-- Einstellungen -->
+<div class="modal-bg" id="set-modal" onclick="if(event.target===this)closeModal('set-modal')">
+  <div class="modal">
+    <h2>Einstellungen</h2>
+    <p class="hint" style="margin:0 0 12px;">Standardwerte – werden beim Öffnen geladen und beim Anklicken einer Leistungsart eingetragen.</p>
+    <p class="section-label">Grunddaten</p>
+    <div class="grid5">
+      <label class="field"><span>Grundgehalt (€/Mon)</span><input type="number" id="s-grundgehalt" step="10"></label>
+      <label class="field"><span>Stundenteiler (Gehalt / x)</span><input type="number" id="s-teiler" step="1" min="1"></label>
+      <label class="field"><span>Taggeld (€/Tag)</span><input type="number" id="s-taggeld" step="1"></label>
+      <label class="field"><span>ZA-Topf Max (h, 0 = keins)</span><input type="number" id="s-zaTopfMax" step="1" min="0"></label>
+    </div>
+    <label class="dd-label" style="margin-top:8px;"><input type="checkbox" id="s-lehrling"> Lehrling</label>
+    <div class="subsec">
+      <p class="section-label">Standard-Stunden pro Leistungsart</p>
+      <div class="grid5">
+        <label class="field"><span>Büro Mo–Do</span><input type="number" id="s-buero" step="0.25" min="0"></label>
+        <label class="field"><span>Büro Fr</span><input type="number" id="s-bueroFr" step="0.25" min="0"></label>
+        <label class="field"><span>Homeoffice Mo–Do</span><input type="number" id="s-ho" step="0.25" min="0"></label>
+        <label class="field"><span>Homeoffice Fr</span><input type="number" id="s-hoFr" step="0.25" min="0"></label>
+        <label class="field"><span>Montage</span><input type="number" id="s-montage" step="0.25" min="0"></label>
+        <label class="field"><span>Montage+Reise Arbeit</span><input type="number" id="s-reiseArbeit" step="0.25" min="0"></label>
+        <label class="field"><span>Reisezeit</span><input type="number" id="s-reisezeit" step="0.25" min="0"></label>
+      </div>
+      <p class="hint">ZA- und Ruhezeit-Tage verwenden automatisch die Normalarbeitszeit des Tages (Mo–Do 8,25 h, Fr 5,5 h).</p>
+    </div>
+    <div class="subsec">
+      <p class="section-label">Darstellung</p>
+      <select id="s-theme" style="max-width:200px;"><option value="auto">Automatisch (System)</option><option value="light">Hell</option><option value="dark">Dunkel</option></select>
+    </div>
+    <div class="subsec">
+      <label class="dd-label"><input type="checkbox" id="s-writeFile" checked> Fest in die HTML-Datei schreiben</label>
+      <p class="hint" style="margin-top:2px;">Chrome/Edge: Beim ersten Mal die Datei <em>index.html</em> (bzw. deine gespeicherte Kopie) auswählen – danach wird sie direkt überschrieben. Safari/Firefox: Es wird eine neue Datei heruntergeladen, mit der du die alte ersetzt.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="resetSettings()">Zurücksetzen</button>
+      <button class="btn" onclick="closeModal('set-modal')">Abbrechen</button>
+      <button class="btn primary" onclick="saveSettings()">Speichern &amp; übernehmen</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const APP_VERSION='1.0.0'
+const MONATE=['Jänner','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
+const WT_ISO=['Mo','Di','Mi','Do','Fr','Sa','So']
+const WT_LABEL=['So','Mo','Di','Mi','Do','Fr','Sa']
+const NAZ={0:0,1:8.25,2:8.25,3:8.25,4:8.25,5:5.5,6:0}
+
+// ── Feiertage ────────────────────────────────────────────────────────────────
+const FIXED_FT=[[1,1,'Neujahr'],[1,6,'Heilige Drei Könige'],[5,1,'Staatsfeiertag'],[8,15,'Mariä Himmelfahrt'],[10,26,'Nationalfeiertag'],[11,1,'Allerheiligen'],[12,8,'Mariä Empfängnis'],[12,25,'Weihnachten'],[12,26,'Stephanstag']]
+function easterSunday(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da)}
+function getFeiertagName(date){const m=date.getMonth()+1,d=date.getDate(),y=date.getFullYear();for(const [fm,fd,n] of FIXED_FT)if(fm===m&&fd===d)return n;const e=easterSunday(y),add=(b,n)=>{const r=new Date(b);r.setDate(r.getDate()+n);return r};for(const [off,n] of [[-2,'Karfreitag'],[1,'Ostermontag'],[39,'Christi Himmelfahrt'],[50,'Pfingstmontag'],[60,'Fronleichnam']]){const ft=add(e,off);if(ft.getFullYear()===y&&ft.getMonth()+1===m&&ft.getDate()===d)return n}return null}
+function isFT(date){return getFeiertagName(date)!==null}
+
+// ── Feiertage Einsatzländer ──────────────────────────────────────────────────
+// fixed: [Monat, Tag, Name, {r:[Regionen], from:Jahr, if:(y)=>bool}]   easter: [Offset zu Ostersonntag, Name, opts]
+const LAENDER={AT:'Österreich',DE:'Deutschland',CH:'Schweiz',FR:'Frankreich',IT:'Italien',NL:'Niederlande',BE:'Belgien',LU:'Luxemburg',ES:'Spanien'}
+const DE_LAENDER={BW:'Baden-Württemberg',BY:'Bayern',BE:'Berlin',BB:'Brandenburg',HB:'Bremen',HH:'Hamburg',HE:'Hessen',MV:'Mecklenburg-Vorpommern',NI:'Niedersachsen',NW:'Nordrhein-Westfalen',RP:'Rheinland-Pfalz',SL:'Saarland',SN:'Sachsen',ST:'Sachsen-Anhalt',SH:'Schleswig-Holstein',TH:'Thüringen'}
+const LAND_FT={
+  DE:{fixed:[[1,1,'Neujahr'],[1,6,'Heilige Drei Könige',{r:['BW','BY','ST']}],[3,8,'Frauentag',{r:['BE','MV']}],[5,1,'Tag der Arbeit'],
+      [8,15,'Mariä Himmelfahrt',{r:['SL','BY']}],[9,20,'Weltkindertag',{r:['TH']}],[10,3,'Tag der Deutschen Einheit'],
+      [10,31,'Reformationstag',{r:['BB','HB','HH','MV','NI','SN','ST','SH','TH']}],[11,1,'Allerheiligen',{r:['BW','BY','NW','RP','SL']}],
+      [12,25,'1. Weihnachtstag'],[12,26,'2. Weihnachtstag']],
+    easter:[[-2,'Karfreitag'],[1,'Ostermontag'],[39,'Christi Himmelfahrt'],[50,'Pfingstmontag'],[60,'Fronleichnam',{r:['BW','BY','HE','NW','RP','SL']}]],
+    special:y=>{const d=new Date(y,10,22);while(d.getDay()!==3)d.setDate(d.getDate()-1);return[[11,d.getDate(),'Buß- und Bettag',{r:['SN']}]]}},
+  CH:{fixed:[[1,1,'Neujahr'],[1,2,'Berchtoldstag'],[8,1,'Bundesfeier'],[12,25,'Weihnachten'],[12,26,'Stephanstag']],
+    easter:[[-2,'Karfreitag'],[1,'Ostermontag'],[39,'Auffahrt'],[50,'Pfingstmontag']]},
+  FR:{fixed:[[1,1,'Neujahr'],[5,1,'Tag der Arbeit'],[5,8,'Kriegsende 1945'],[7,14,'Nationalfeiertag'],[8,15,'Mariä Himmelfahrt'],[11,1,'Allerheiligen'],[11,11,'Waffenstillstand 1918'],[12,25,'Weihnachten']],
+    easter:[[1,'Ostermontag'],[39,'Christi Himmelfahrt'],[50,'Pfingstmontag']]},
+  IT:{fixed:[[1,1,'Neujahr'],[1,6,'Heilige Drei Könige'],[4,25,'Tag der Befreiung'],[5,1,'Tag der Arbeit'],[6,2,'Tag der Republik'],[8,15,'Ferragosto'],
+      [10,4,'Hl. Franz von Assisi',{from:2026}],[11,1,'Allerheiligen'],[12,8,'Mariä Empfängnis'],[12,25,'Weihnachten'],[12,26,'Stephanstag']],
+    easter:[[1,'Ostermontag']]},
+  NL:{fixed:[[1,1,'Neujahr'],[5,5,'Befreiungstag',{if:y=>y%5===0}],[12,25,'1. Weihnachtstag'],[12,26,'2. Weihnachtstag']],
+    easter:[[1,'Ostermontag'],[39,'Christi Himmelfahrt'],[50,'Pfingstmontag']],
+    special:y=>[[4,new Date(y,3,27).getDay()===0?26:27,'Königstag']]},
+  BE:{fixed:[[1,1,'Neujahr'],[5,1,'Tag der Arbeit'],[7,21,'Nationalfeiertag'],[8,15,'Mariä Himmelfahrt'],[11,1,'Allerheiligen'],[11,11,'Waffenstillstand 1918'],[12,25,'Weihnachten']],
+    easter:[[1,'Ostermontag'],[39,'Christi Himmelfahrt'],[50,'Pfingstmontag']]},
+  LU:{fixed:[[1,1,'Neujahr'],[5,1,'Tag der Arbeit'],[5,9,'Europatag'],[6,23,'Nationalfeiertag'],[8,15,'Mariä Himmelfahrt'],[11,1,'Allerheiligen'],[12,25,'Weihnachten'],[12,26,'Stephanstag']],
+    easter:[[1,'Ostermontag'],[39,'Christi Himmelfahrt'],[50,'Pfingstmontag']]},
+  ES:{fixed:[[1,1,'Neujahr'],[1,6,'Heilige Drei Könige'],[5,1,'Tag der Arbeit'],[8,15,'Mariä Himmelfahrt'],[10,12,'Nationalfeiertag'],[11,1,'Allerheiligen'],[12,6,'Tag der Verfassung'],[12,8,'Mariä Empfängnis'],[12,25,'Weihnachten']],
+    easter:[[-2,'Karfreitag']]},
+}
+const landFtCache={}
+function landFeiertage(y,land,region){
+  const ck=y+'|'+land+'|'+(region||'')
+  if(landFtCache[ck])return landFtCache[ck]
+  const def=LAND_FT[land],map={}
+  if(def){
+    const ok=o=>!o||((!o.r||o.r.includes(region))&&(!o.from||y>=o.from)&&(!o.if||o.if(y)))
+    const add=(m,d,n,o)=>{if(ok(o))map[m+'-'+d]=n}
+    def.fixed.forEach(([m,d,n,o])=>add(m,d,n,o))
+    const e=easterSunday(y)
+    ;(def.easter||[]).forEach(([off,n,o])=>{const x=new Date(e);x.setDate(x.getDate()+off);if(x.getFullYear()===y)add(x.getMonth()+1,x.getDate(),n,o)})
+    if(def.special)def.special(y).forEach(([m,d,n,o])=>add(m,d,n,o))
+  }
+  return landFtCache[ck]=map
+}
+function isMontageMode(m){return m==='montage'||m==='montage_reise'}
+function landLabel(land,region){return land==='DE'&&region?'DE-'+region:land}
+// Feiertag eines Tages: Österreich immer, bei Montage im Ausland zusätzlich das Einsatzland (beide zählen)
+function dayFeiertag(date,dd){
+  const at=getFeiertagName(date)
+  let lf=null
+  if(dd&&isMontageMode(dd.mode)&&dd.land&&dd.land!=='AT')lf=landFeiertage(date.getFullYear(),dd.land,dd.region)[(date.getMonth()+1)+'-'+date.getDate()]||null
+  const name=at&&lf?(at===lf?at:at+' / '+dd.land+': '+lf):at||(lf?dd.land+': '+lf:null)
+  return{ft:!!(at||lf),name,at,lf}
+}
+
+// Quelltext der Seite im Originalzustand (vor jeder JS-Änderung) — Basis zum Zurückschreiben der Einstellungen
+const SOURCE_HTML=(()=>{const c=document.documentElement.cloneNode(true);c.removeAttribute('data-theme');return'<!DOCTYPE html>\n'+c.outerHTML})()
+
+// ── Einstellungen (in HTML eingebettet + localStorage, neuere Quelle gewinnt) ─
+const DEFAULT_SETTINGS={grundgehalt:0,teiler:143,land:'AT',region:'',taggeld:0,zaTopfMax:0,lehrling:false,
+  buero:8.25,bueroFr:5.5,ho:8.25,hoFr:5.5,montage:10,reiseArbeit:10,reisezeit:0,theme:'dark',
+  turnus:{customOn:12,customOff:2,stunden:10,reise:false,reiseArbeit:0,reisezeit:8,za:true}}
+function readEmbeddedSettings(){try{return JSON.parse(document.getElementById('embedded-settings').textContent||'{}')}catch(e){return{}}}
+function loadSettings(){
+  let ls={};try{ls=JSON.parse(localStorage.getItem('lzr_settings')||'{}')}catch(e){}
+  const em=readEmbeddedSettings()
+  return{...DEFAULT_SETTINGS,...((em._saved||0)>(ls._saved||0)?em:ls)}
+}
+let settings=loadSettings()
+
+// ── State ────────────────────────────────────────────────────────────────────
+let state={
+  monat:new Date().getMonth()+1,
+  jahr:new Date().getFullYear(),
+  grundgehalt:settings.grundgehalt,stundensatz:0,taggeld:settings.taggeld,
+  zaTopfMax:settings.zaTopfMax,
+  zaTopfStart:0,
+  ruheStart:0,
+  lehrling:settings.lehrling,
+  urlaubsgeldAktiv:false,
+  urlaubsgeldBetrag:0,
+  extras:[],   // [{id, name, betrag, steuer}] steuer: 'stpfl'|'steuerfrei'|'begunstigt'
+  dayMap:{},
+  openKey:null,
+  clipboard:null
+}
+// ── Extras (Prämien & Zuschläge) ─────────────────────────────────────────────
+let extraIdCounter=0
+function addExtra(){
+  state.extras.push({id:++extraIdCounter,name:'',betrag:0,steuer:'stpfl'})
+  renderExtrasList()
+  render()
+}
+function deleteExtra(id){
+  state.extras=state.extras.filter(e=>e.id!==id)
+  renderExtrasList()
+  render()
+}
+function renderExtrasList(){
+  const list=document.getElementById('extras-list')
+  if(!list) return
+  list.innerHTML=''
+  state.extras.forEach(ex=>{
+    const row=document.createElement('div');row.className='extras-row'
+    // Name
+    const inp=document.createElement('input');inp.type='text';inp.placeholder='z.B. Prämie, Zulage …';inp.value=ex.name
+    inp.oninput=()=>{ex.name=inp.value;render()}
+    // Betrag
+    const amt=document.createElement('input');amt.type='number';amt.step='10';amt.min='0';amt.value=ex.betrag
+    amt.oninput=()=>{ex.betrag=parseFloat(amt.value)||0;render()}
+    // Steuerart
+    const sel=document.createElement('select')
+    ;[
+      {v:'stpfl',l:'Steuerpflichtig'},
+      {v:'steuerfrei',l:'Steuerfrei'},
+      {v:'begunstigt',l:'§67 begünstigt (6%)'},
+    ].forEach(({v,l})=>{const o=document.createElement('option');o.value=v;o.textContent=l;if(ex.steuer===v)o.selected=true;sel.appendChild(o)})
+    sel.onchange=()=>{ex.steuer=sel.value;render()}
+    // Löschen
+    const del=document.createElement('button');del.className='btn-del-extra';del.textContent='×';del.title='Entfernen'
+    del.onclick=()=>deleteExtra(ex.id)
+    row.appendChild(inp);row.appendChild(amt);row.appendChild(sel);row.appendChild(del)
+    list.appendChild(row)
+  })
+}
+
+function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function getISOWeek(date){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));const day=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-day);const yr=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil(((d.getTime()-yr.getTime())/86400000+1)/7)}
+function getWeeksOfMonth(m,y){const last=new Date(y,m,0);const weeks=[];let week=[];for(let d=1;d<=last.getDate();d++){const date=new Date(y,m-1,d);const dow=date.getDay();const iso=dow===0?7:dow;if(week.length===0&&iso!==1)for(let i=1;i<iso;i++)week.push(null);week.push(date);if(iso===7||d===last.getDate()){weeks.push(week);week=[]}}return weeks}
+function r(n){return Math.round(n*100)/100}
+function fmt(n){return n.toLocaleString('de-AT',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmtH(n){return n.toLocaleString('de-AT',{minimumFractionDigits:2,maximumFractionDigits:2})}
+// ── Werte 2026 (ÖGK, BMF, WKO) ───────────────────────────────────────────────
+const W={
+  hbglMonat:6930, hbglSZJahr:13860,                       // Höchstbeitragsgrundlage lfd / Sonderzahlungen
+  svKV:0.0387, svPV:0.1025, svAV:0.0295, svAK:0.005, svWBF:0.005,
+  lehrKV:0.0167, lehrAV:0.0115,                            // Lehrlinge: keine AK-Umlage, kein WBF
+  tarif:[[13539,0],[21992,0.2],[36458,0.3],[70365,0.4],[104859,0.48],[1000000,0.5],[Infinity,0.55]],
+  vab:496, wkPausch:132,                                   // Verkehrsabsetzbetrag, Werbungskostenpauschale (jährlich)
+  frei68_1:400,                                            // §68/1: Sonn-/Feiertagszuschläge + Feiertagsarbeitsentgelt
+  frei68_2:170, frei68_2Std:15,                            // §68/2: Überstundenzuschläge, erste 15 h, max. 50% Grundlohn
+  szFreibetrag:620, szFreigrenze:2100, szSatz:0.06,        // §67 Sonderzahlungen
+  hoMaxTag:3
+}
+// Steuer- und SV-freies Taggeld pro Tag (Inland bzw. Auslandsreisesatz BMF/WKO 2026)
+const TAGGELD_FREI={AT:30,DE:35.3,CH:36.8,FR:32.7,IT:35.8,NL:35.3,BE:35.3,LU:35.3,ES:34.2}
+// AV-Dienstnehmeranteil ist bei geringem Entgelt reduziert
+function avSatz(b){
+  if(b<=2225)return 0
+  if(b<=2427)return 0.01
+  if(state.lehrling)return W.lehrAV
+  return b<=2630?0.02:W.svAV
+}
+function svSatzLfd(b){return state.lehrling?W.lehrKV+W.svPV+avSatz(b):W.svKV+W.svPV+avSatz(b)+W.svAK+W.svWBF}
+function svSatzSZ(b){return state.lehrling?W.lehrKV+W.svPV+avSatz(b):W.svKV+W.svPV+avSatz(b)}  // ohne AK-Umlage/WBF
+// Lohnsteuer laufender Monatsbezug: Bemessungsgrundlage ×12 → Tarif → − Verkehrsabsetzbetrag → ÷12
+function lstMonat(bmg){
+  const j=Math.max(0,bmg)*12;let st=0,prev=0
+  for(const [g,satz] of W.tarif){if(j>prev)st+=(Math.min(j,g)-prev)*satz;if(j<=g)break;prev=g}
+  return r(Math.max(0,st-W.vab)/12)
+}
+function svLabel(rate){return (rate*100).toLocaleString('de-AT',{minimumFractionDigits:2,maximumFractionDigits:2})+'%'}
+function nazForDate(date){const dow=date.getDay();return (isFT(date)&&dow!==0&&dow!==6)?0:NAZ[dow]}
+function keyToDate(key){const [y,m,d]=key.split('-').map(Number);return new Date(y,m-1,d)}
+function defaultStunden(mode,date){
+  const fr=date.getDay()===5
+  if(mode==='buero') return fr?settings.bueroFr:settings.buero
+  if(mode==='homeoffice') return fr?settings.hoFr:settings.ho
+  if(mode==='montage') return settings.montage
+  if(mode==='montage_reise') return settings.reiseArbeit
+  if(mode==='za'||mode==='ruhe') return nazForDate(date)
+  return 0
+}
+function getDayData(key){return state.dayMap[key]||{mode:'frei',stunden:8.25,fahrzeit:0}}
+
+// ── Copy / Paste ─────────────────────────────────────────────────────────────
+function copyDay(key){
+  if(state.place)cancelPlace()
+  const d=getDayData(key)
+  state.clipboard={mode:d.mode,stunden:d.stunden,fahrzeit:d.fahrzeit,tausch:!!d.tausch,land:d.land,region:d.region}
+  const modeLabel={frei:'Frei',buero:'Büro',homeoffice:'Homeoffice',montage:'Montage',montage_reise:'Montage + Reisezeit',za:'Zeitausgleich',ruhe:'Ruhezeit'}
+  document.getElementById('copy-label').textContent=modeLabel[d.mode]+(d.mode==='montage'||d.mode==='montage_reise'?' ('+d.stunden+'h'+(d.fahrzeit?' +'+d.fahrzeit+'h Reise':'')+')':'')
+  document.getElementById('copy-bar').classList.add('active')
+  closeDD()
+}
+
+function pasteDay(key){
+  if(!state.clipboard)return
+  const d={...state.clipboard}
+  // ZA/Ruhezeit: Abwesenheit an die Normalarbeitszeit des Zieltages anpassen (z.B. Fr 5,5 h)
+  if(d.mode==='za'||d.mode==='ruhe') d.stunden=nazForDate(keyToDate(key))
+  state.dayMap[key]=d
+  render()
+}
+
+function clearCopy(){
+  state.clipboard=null
+  document.getElementById('copy-bar').classList.remove('active')
+  render()
+}
+
+// ── Berechnung ───────────────────────────────────────────────────────────────
+function berechneTag(date,dd){
+  const realDow=date.getDay(),fd=dayFeiertag(date,dd),ft=fd.ft,ftName=fd.name
+  // Feiertag (kein Sa/So) → effektiv wie Sonntag für NAZ (=0), aber NICHT §68/1
+  const effDow=(ft&&realDow!==0&&realDow!==6)?0:realDow
+  const naz=NAZ[effDow],mode=dd.mode
+
+  // ─── Tagesberechnung ──────────────────────────────────────────────────────
+  // Regeln (final):
+  // Mo–Do: NAZ=8,25h. Bis 8,25h → im Grundgehalt. 8,25–10h → ZA-Topf. >10h → §68/2 + Grundvergütung.
+  // Fr:    NAZ=5,5h.  Bis 5,5h  → im Grundgehalt. 5,5–10h  → ZA-Topf. >10h → §68/2 + Grundvergütung.
+  // Sa:    NAZ=0. ALLE Stunden → Grundvergütung + 50% Zuschlag. Kein §68/2.
+  // So:    NAZ=0. ALLE Stunden → Grundvergütung + §68/1 (100%). Kein §68/2.
+  // Ft:    NAZ=0. ALLE Stunden → Grundvergütung + §68/2 (100%).
+  // grundStd = Stunden die EXTRA zum Grundgehalt ausbezahlt werden
+  //          = Sa/So/Ft: alle Stunden; Mo–Fr: nur Stunden >10h (§68/2)
+  function calcStunden(g, dow, isSonntag, isFeiertag){
+    let zaTopf=0, ue50=0, ue68_1=0, ue68_2=0, grundStd=0, ueFt=0
+    const nazLocal = NAZ[dow]
+
+    if(isSonntag){
+      // ALLE Stunden: Grundvergütung + §68/1 (100%). Keine >10h-Staffel.
+      grundStd = g
+      ue68_1 = g
+    } else if(isFeiertag){
+      // ALLE Stunden: Grundvergütung + §68/2 (100%).
+      grundStd = g
+      ue68_2 = g
+      ueFt = g
+    } else if(dow===6){
+      // ALLE Stunden: Grundvergütung + 50% Zuschlag. Keine >10h-Staffel.
+      grundStd = g
+      ue50 = g
+    } else if(dow===5){
+      // Freitag NAZ=5,5h: unter NAZ → neg. ZA; 5,5–10h → ZA-Topf; >10h → §68/2 + Grundvergütung
+      const over10 = Math.max(0, g - 10)
+      ue68_2 = over10
+      grundStd = over10
+      zaTopf = g >= nazLocal ? Math.max(0, g - nazLocal - over10) : g - nazLocal
+    } else {
+      // Mo–Do NAZ=8,25h: unter NAZ → neg. ZA; 8,25–10h → ZA-Topf; >10h → §68/2 + Grundvergütung
+      const over10 = Math.max(0, g - 10)
+      ue68_2 = over10
+      grundStd = over10
+      if(g < nazLocal) zaTopf = g - nazLocal
+      else zaTopf = Math.min(Math.max(0, g - nazLocal), Math.max(0, 10 - nazLocal))
+    }
+    return{zaTopf, ue50, ue68_1, ue68_2, grundStd, ueFt}
+  }
+
+  const isSonntag = realDow===0
+  const isFeiertag = ft && !isSonntag && realDow!==6
+
+  if(mode==='buero'||mode==='homeoffice'){
+    const g=dd.stunden
+    const nazG=Math.min(g,naz)
+    const {zaTopf,ue50,ue68_1,ue68_2,grundStd,ueFt}=calcStunden(g,realDow,isSonntag,isFeiertag)
+    return{datum:date,wochentag:realDow,istFeiertag:ft,ftName,
+      arbStunden:g,fahrzeit:0,gesamtStunden:g,nazStunden:nazG,
+      zaTopfStunden:zaTopf,ueStd50:ue50,ueStd100_68_1:ue68_1,ueStd100_68_2:ue68_2,ueStdFt:ueFt,
+      grundStd,lenkzeit:0,onSiteStunden:0,ruheNeu:isSonntag?g:0,ruheVerbrauch:0,abwStunden:0,
+      istMontage:false,isBuero:mode==='buero',isHO:mode==='homeoffice'}
+  }
+  if(mode==='za'||mode==='ruhe'){
+    // Abwesenheit: Stunden werden später chronologisch aus Ruhezeit- bzw. ZA-Topf gedeckt (siehe verteileAbwesenheit)
+    const abw=Math.max(0,dd.stunden||0)
+    return{datum:date,wochentag:realDow,istFeiertag:ft,ftName,
+      arbStunden:0,fahrzeit:0,gesamtStunden:0,nazStunden:0,
+      zaTopfStunden:0,ueStd50:0,ueStd100_68_1:0,ueStd100_68_2:0,
+      grundStd:0,lenkzeit:0,onSiteStunden:0,ruheNeu:0,ruheVerbrauch:0,abwStunden:abw,
+      istMontage:false,isBuero:false,isHO:false,isZA:mode==='za',isRuhe:mode==='ruhe'}
+  }
+  if(mode==='frei'){
+    return{datum:date,wochentag:realDow,istFeiertag:ft,ftName,
+      arbStunden:0,fahrzeit:0,gesamtStunden:0,nazStunden:0,
+      zaTopfStunden:0,ueStd50:0,ueStd100_68_1:0,ueStd100_68_2:0,
+      grundStd:0,lenkzeit:0,onSiteStunden:0,ruheNeu:0,ruheVerbrauch:0,abwStunden:0,
+      istMontage:false,isBuero:false,isHO:false}
+  }
+
+  // Montage / Montage+Reise
+  // 10/4-Modell (dd.tausch): Sa/So im Arbeitsblock sind normale Arbeitstage (wie Mo–Do, NAZ 8,25h).
+  // Die freien Do/Fr ersetzen das Wochenende. Keine Sa/So-Zuschläge, keine Auszahlung, keine Ruhezeit.
+  const tausch=!!dd.tausch&&(realDow===6||realDow===0)
+  const calcDow=tausch?2:realDow
+  const nazT=tausch?NAZ[calcDow]:naz
+  const sonntagT=tausch?false:isSonntag
+  const arbStunden=dd.stunden
+  const fahrzeit=mode==='montage_reise'?(dd.fahrzeit||0):0
+  const lenkzeit=Math.max(0,fahrzeit-Math.max(0,nazT-arbStunden))
+  const g=arbStunden+fahrzeit
+  const istReise=mode==='montage_reise'
+  // Reisetage gelten als voller Arbeitstag: weniger Stunden als NAZ ziehen KEINE ZA ab
+  const nazG=istReise?nazT:Math.min(g,nazT)
+  const calc=calcStunden(g,calcDow,sonntagT,isFeiertag)
+  const {ue50,ue68_1,ue68_2,grundStd,ueFt}=calc
+  const zaTopf=istReise?Math.max(0,calc.zaTopf):calc.zaTopf
+
+  return{datum:date,wochentag:realDow,istFeiertag:ft,ftName,
+    arbStunden,fahrzeit,gesamtStunden:g,nazStunden:nazG,zaTopfStunden:zaTopf,
+    ueStd50:ue50,ueStd100_68_1:ue68_1,ueStd100_68_2:ue68_2,ueStdFt:ueFt,land:dd.land||'AT',
+    grundStd,lenkzeit,ruheNeu:sonntagT?g:0,ruheVerbrauch:0,abwStunden:0,tausch,
+    onSiteStunden:arbStunden,istMontage:true,isBuero:false,isHO:false}
+}
+
+function calcWeeklyTotal(days){
+  // Wochengrenze 50h gilt nur für Mo–Fr Arbeitstage.
+  // Sa/So/Feiertag-Stunden sind bereits separat vergütet (50%/100%) und zählen NICHT zur 50h-Grenze.
+  // Positive ZA-Stunden (Mo–Fr Mehrzeit) die über 50h hinausgehen → §68/2 + Grundvergütung.
+  const moFrDays=days.filter(d=>d.wochentag>=1&&d.wochentag<=5&&!d.istFeiertag)
+  const total=moFrDays.reduce((s,d)=>s+d.gesamtStunden,0)
+  if(total<=50) return
+  let rem=total-50
+  // Rückwärts durch Mo–Fr Tage
+  for(let i=moFrDays.length-1;i>=0&&rem>0;i--){
+    const d=moFrDays[i]
+    if(d.zaTopfStunden>0){
+      const fZ=Math.min(d.zaTopfStunden,rem)
+      d.zaTopfStunden-=fZ; d.ueStd100_68_2+=fZ; d.grundStd+=fZ; rem-=fZ
+    }
+  }
+}
+
+function berechneMonat(weeks,dayMap){
+  const result=[]
+  for(const week of weeks){
+    const real=week.filter(d=>d!==null)
+    const wt=real.map(date=>berechneTag(date,dayMap[dateKey(date)]||{mode:'frei',stunden:8.25,fahrzeit:0}))
+    const kw=real.length>0?getISOWeek(real[0]):0
+    wt.forEach(t=>t.kw=kw)
+    calcWeeklyTotal(wt);result.push(...wt)
+  }
+  return result
+}
+
+// Chronologisch: Sonntagsstunden → Ruhezeit-Topf (1:1). ZA-/Ruhezeit-Tage leeren zuerst den
+// Ruhezeit-Topf, der Rest geht vom ZA-Topf ab.
+function verteileAbwesenheit(alleTage,ruheStart){
+  let bal=ruheStart
+  for(const t of alleTage){
+    bal+=t.ruheNeu
+    if(t.abwStunden>0){
+      const ausRuhe=Math.min(Math.max(0,bal),t.abwStunden)
+      bal-=ausRuhe
+      t.ruheVerbrauch=ausRuhe
+      t.zaTopfStunden=-(t.abwStunden-ausRuhe)
+    }
+    t.ruheSaldo=bal
+  }
+  return{ruheStart,ruheNeu:r(alleTage.reduce((s,t)=>s+t.ruheNeu,0)),
+    ruheVerbrauch:r(alleTage.reduce((s,t)=>s+t.ruheVerbrauch,0)),ruheEnde:r(bal)}
+}
+
+function berechneLohnzettel(alleTage,grundgehalt,stundensatz,taggeld,zaTopfMax,zaTopfStart,urlaubsgeldAktiv,urlaubsgeldBetrag,extras){
+  const mt=alleTage.filter(t=>t.istMontage),hoTage=alleTage.filter(t=>t.isHO)
+  const ue50=r(alleTage.reduce((s,t)=>s+t.ueStd50,0))
+  const ue68_1=r(alleTage.reduce((s,t)=>s+t.ueStd100_68_1,0))
+  const ue68_2=r(alleTage.reduce((s,t)=>s+t.ueStd100_68_2,0))
+  const zaTopfNeu=r(alleTage.reduce((s,t)=>s+t.zaTopfStunden,0))
+  const lenkzeit=r(alleTage.reduce((s,t)=>s+t.lenkzeit,0))
+  const onSiteStd=r(mt.reduce((s,t)=>s+t.onSiteStunden,0))
+
+  // ZA-Topf Saldo: Startsaldo + neue ZA diesen Monat
+  const zaTopfSaldo=r(zaTopfStart+zaTopfNeu)
+  // Überlauf: Stunden über Maximum werden als Grundvergütung ausbezahlt
+  const zaUeberlauf=zaTopfMax>0 ? r(Math.max(0, zaTopfSaldo-zaTopfMax)) : 0
+  // Verbleibender ZA-Saldo (gedeckelt bei Maximum)
+  const zaTopfEnde=zaTopfMax>0 ? r(Math.min(zaTopfSaldo, zaTopfMax)) : zaTopfSaldo
+
+  // Grundvergütung = eigene grundStd-Stunden + ZA-Überlauf
+  // ZA-Überlauf wird mit Grundvergütung + 50% Zuschlag vergütet
+  const ueGrundStdBase=r(alleTage.reduce((s,t)=>s+t.grundStd,0))
+  const ueGrundStd=r(ueGrundStdBase+zaUeberlauf)
+  const zaUeberlaufZuschlagB=r(zaUeberlauf*stundensatz*0.5)  // 50% Zuschlag auf Überlauf
+
+  const ue50B=r(ue50*stundensatz*0.5),ue68_1B=r(ue68_1*stundensatz),ue68_2B=r(ue68_2*stundensatz)
+  const ueGrundB=r(ueGrundStd*stundensatz),onSiteB=r(onSiteStd*1.4),tgB=r(mt.length*taggeld)
+  const lkB=r(lenkzeit*stundensatz*0.5),hoPauschale=r(hoTage.length*1.0)
+
+  // ── Extras (Prämien & Zuschläge) ─────────────────────────────────────────
+  // steuerfrei → steuer- und SV-frei; stpfl → zum laufenden Bezug; begünstigt → Sonderzahlung §67
+  const extrasCalc=(extras||[]).map(ex=>({...ex,brutto:ex.betrag||0}))
+  const exSum=k=>r(extrasCalc.filter(e=>e.steuer===k).reduce((s,e)=>s+e.brutto,0))
+  const extrasFrei=exSum('steuerfrei'),extrasLfd=exSum('stpfl'),extrasSZ=exSum('begunstigt')
+  const extrasBruttoTotal=r(extrasFrei+extrasLfd+extrasSZ)
+
+  // ── Laufende Bezüge ──────────────────────────────────────────────────────
+  const lfdBrutto=r(grundgehalt+ue50B+ue68_1B+ue68_2B+ueGrundB+onSiteB+tgB+lkB+hoPauschale+zaUeberlaufZuschlagB+extrasLfd)
+
+  // Taggeld: steuer-/SV-frei bis zum Satz des Einsatzlandes, Rest steuerpflichtig
+  const tgFrei=r(mt.reduce((s,t)=>s+Math.min(taggeld,TAGGELD_FREI[t.land]||TAGGELD_FREI.AT),0))
+  const tgStpfl=r(tgB-tgFrei)
+  const hoFrei=r(Math.min(hoPauschale,hoTage.length*W.hoMaxTag))
+
+  // §68/1: Sonntags- und Feiertagszuschläge + Feiertagsarbeitsentgelt, zusammen max. 400 €
+  const ftStd=r(alleTage.reduce((s,t)=>s+(t.ueStdFt||0),0))
+  const topf68_1=r(ue68_1B+ftStd*stundensatz+ftStd*stundensatz)
+  const frei68_1=r(Math.min(W.frei68_1,topf68_1))
+  // §68/2: Überstundenzuschläge (Sa 50%, über 10h, 50h-Woche, ZA-Überlauf) — erste 15 h, je h max. 50% Grundlohn, max. 170 €
+  const ueStdOhneFt=r(Math.max(0,ue68_2-ftStd))
+  const topf68_2Std=r(ue50+ueStdOhneFt+zaUeberlauf)
+  const topf68_2=r(ue50B+ueStdOhneFt*stundensatz+zaUeberlaufZuschlagB)
+  const frei68_2=r(Math.min(W.frei68_2,topf68_2,0.5*stundensatz*Math.min(W.frei68_2Std,topf68_2Std)))
+
+  // SV laufend: alles außer steuerfreiem Taggeld und HO-Pauschale, gedeckelt bei der Höchstbeitragsgrundlage
+  const svBasisRoh=r(lfdBrutto-tgFrei-hoFrei)
+  const svBasis=r(Math.min(svBasisRoh,W.hbglMonat))
+  const svR=svSatzLfd(svBasis)
+  const svB=r(svBasis*svR)
+  const stpflB=r(lfdBrutto-tgFrei-hoFrei-frei68_1-frei68_2)
+  const bmgLfd=r(stpflB-svB-W.wkPausch/12)
+  const ls=lstMonat(bmgLfd)
+
+  // ── Sonderzahlungen §67 (Urlaubsgeld + begünstigte Prämien) ──────────────
+  const ugBrutto=urlaubsgeldAktiv?urlaubsgeldBetrag:0
+  const szBrutto=r(ugBrutto+extrasSZ)
+  const jahressechstel=r(grundgehalt*2)  // Näherung: 2 Monatsgehälter
+  const szIn=r(Math.min(szBrutto,jahressechstel)),szUeber=r(szBrutto-szIn)
+  const szSVR=svSatzSZ(szBrutto)
+  const szSV=r(Math.min(szBrutto,W.hbglSZJahr)*szSVR)
+  const svIn=szBrutto>0?r(szSV*szIn/szBrutto):0,svUeber=r(szSV-svIn)
+  // 6% nach Abzug der SV; Freibetrag 620 €, Freigrenze 2.100 € (Annahme: erste Sonderzahlung im Jahr)
+  const basis6=r(szIn-svIn)
+  const szLS6=basis6<=W.szFreigrenze?0:r(W.szSatz*Math.max(0,basis6-W.szFreibetrag))
+  // Teil über dem Jahressechstel wird wie ein laufender Bezug versteuert
+  const szLSUeber=szUeber>0?r(lstMonat(bmgLfd+szUeber-svUeber)-ls):0
+
+  const summeBrutto=r(lfdBrutto+extrasFrei+szBrutto)
+  const netto=r(summeBrutto-svB-szSV-ls-szLS6-szLSUeber)
+  return{grundgehalt,ue50Std:ue50,ue50B,ue68_1Std:ue68_1,ue68_1B,ue68_2Std:ue68_2,ue68_2B,
+    ueGrundStd,ueGrundStdBase,zaUeberlauf,zaUeberlaufZuschlagB,ueGrundB,onSiteStd,onSiteB,taggelder:mt.length,tgB,lkStd:lenkzeit,lkB,
+    hoTage:hoTage.length,hoPauschale,hoFrei,tgFrei,tgStpfl,
+    topf68_1,frei68_1,topf68_2,topf68_2Std,frei68_2,
+    ugBrutto,extrasSZ,szBrutto,szIn,szUeber,szSV,szSVR,szLS6,szLSUeber,jahressechstel,
+    extrasCalc,extrasBruttoTotal,extrasFrei,extrasLfd,
+    lfdBrutto,summeBrutto,stpflB,svBasis,svBasisRoh,svB,svR,ls,netto,
+    zaTopfNeu,zaTopfSaldo,zaTopfEnde,zaTopfMax,zaTopfStart,stundensatz,taggeld}
+}
+
+// ── Dropdown ─────────────────────────────────────────────────────────────────
+function closeDD(){
+  state.openKey=null
+  document.getElementById('dropdown').style.display='none'
+  document.getElementById('overlay').style.display='none'
+  render()
+}
+
+function positionDD(btn){
+  const dd=document.getElementById('dropdown')
+  // getBoundingClientRect() returns viewport-relative coords — correct for position:fixed, no scroll offset needed
+  const rect=btn.getBoundingClientRect()
+  const ddW=244, ddH=dd.offsetHeight||320
+  const vw=window.innerWidth, vh=window.innerHeight
+
+  let left=rect.left
+  let top=rect.bottom+6
+
+  // Flip left if overflows right edge
+  if(left+ddW>vw-8) left=rect.right-ddW
+  // Clamp to left edge
+  if(left<8) left=8
+  // Flip above if overflows bottom
+  if(top+ddH>vh-8) top=rect.top-ddH-6
+  if(top<8) top=8
+
+  dd.style.left=left+'px'
+  dd.style.top=top+'px'
+}
+
+function openDD(key,btn){
+  if(state.openKey===key){closeDD();return}
+  state.openKey=key
+  buildDDContent(key,btn)
+  const dd=document.getElementById('dropdown')
+  dd.style.display='block'
+  document.getElementById('overlay').style.display='block'
+  // Position after display so offsetHeight is available
+  positionDD(btn)
+  render()
+}
+
+function buildDDContent(key,btn){
+  const data=getDayData(key)
+  const cont=document.getElementById('dd-content')
+  cont.innerHTML=''
+
+  const groups=[
+    {label:'Anwesenheit',modes:[{v:'buero',l:'Büro (Normalarbeitszeit)'},{v:'homeoffice',l:'Homeoffice (+ €1/Tag)'}]},
+    {label:'Montage',modes:[{v:'montage',l:'Montage'},{v:'montage_reise',l:'Montage + Reisezeit'}]},
+    {label:'Abwesenheit',modes:[{v:'za',l:'Zeitausgleich (ZA)'},{v:'ruhe',l:'Ruhezeit'}]},
+    {label:'',modes:[{v:'frei',l:'Frei'}]},
+  ]
+  groups.forEach(({label,modes})=>{
+    if(label){const gl=document.createElement('p');gl.className='dd-group-label';gl.textContent=label;cont.appendChild(gl)}
+    modes.forEach(({v,l})=>{
+      const lbl=document.createElement('label');lbl.className='dd-label'
+      const inp=document.createElement('input');inp.type='radio';inp.name='ddmode';inp.value=v;inp.checked=data.mode===v
+      inp.onchange=()=>{
+        const cur=getDayData(key)
+        // Standard-Stunden aus den Einstellungen beim Wechsel der Leistungsart
+        const date=keyToDate(key)
+        const stunden=defaultStunden(v,date)
+        const fahrzeit=v==='montage_reise'?settings.reisezeit:0
+        const nd={...cur,mode:v,stunden,fahrzeit}
+        // Neue Montage-Tage bekommen das aktuell gewählte Einsatzland
+        if(isMontageMode(v)&&!isMontageMode(cur.mode)){nd.land=settings.land||'AT';nd.region=settings.region||''}
+        state.dayMap[key]=nd
+        buildDDContent(key,btn)
+        positionDD(btn)
+        render()
+      }
+      lbl.appendChild(inp);lbl.appendChild(document.createTextNode(l));cont.appendChild(lbl)
+    })
+  })
+
+  // Hours input for all work modes (not Frei)
+  const showInputs=data.mode!=='frei'
+  if(showInputs){
+    const isAbw=data.mode==='za'||data.mode==='ruhe'
+    const sep=document.createElement('hr');sep.className='dd-sep';cont.appendChild(sep)
+    const r1=document.createElement('div');r1.className='dd-row'
+    r1.innerHTML=isAbw?'<span>Abwesend (h)</span>':'<span>Stunden</span>'
+    const i1=document.createElement('input');i1.type='number';i1.step='0.25';i1.min='0';i1.max='24';i1.value=data.stunden
+    i1.onchange=()=>{state.dayMap[key]={...getDayData(key),stunden:parseFloat(i1.value)||0};render()}
+    r1.appendChild(i1);cont.appendChild(r1)
+    if(data.mode==='montage_reise'){
+      const r2=document.createElement('div');r2.className='dd-row';r2.innerHTML='<span>Reisezeit (h)</span>'
+      const i2=document.createElement('input');i2.type='number';i2.step='0.25';i2.min='0';i2.value=data.fahrzeit||0
+      i2.onchange=()=>{state.dayMap[key]={...getDayData(key),fahrzeit:parseFloat(i2.value)||0};render()}
+      r2.appendChild(i2);cont.appendChild(r2)
+      const info=document.createElement('p');info.className='dd-info'
+      info.textContent='Reisezeit = Arbeitszeit ohne On-Site-Zulage.'
+      cont.appendChild(info)
+    }
+    if(isAbw){
+      const info=document.createElement('p');info.className='dd-info'
+      info.textContent=data.mode==='ruhe'
+        ?'Wird aus dem Ruhezeit-Topf genommen. Reicht er nicht, geht der Rest vom ZA-Topf ab.'
+        :'Zuerst wird der Ruhezeit-Topf geleert, danach der ZA-Topf.'
+      cont.appendChild(info)
+    }
+  }
+
+  // Einsatzland dieses Montage-Tages
+  if(isMontageMode(data.mode)){
+    const rl=document.createElement('div');rl.className='dd-row';rl.style.marginTop='6px'
+    rl.innerHTML='<span>Land</span>'
+    const ls=document.createElement('select');ls.style.cssText='width:130px;padding:3px 6px;font-size:12px;'
+    Object.entries(LAENDER).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;if((data.land||'AT')===k)o.selected=true;ls.appendChild(o)})
+    ls.onchange=()=>{state.dayMap[key]={...getDayData(key),land:ls.value,region:ls.value==='DE'?(getDayData(key).region||''):''};buildDDContent(key,btn);positionDD(btn);render()}
+    rl.appendChild(ls);cont.appendChild(rl)
+    if((data.land||'AT')==='DE'){
+      const rr=document.createElement('div');rr.className='dd-row';rr.innerHTML='<span>Bundesland</span>'
+      const rs=document.createElement('select');rs.style.cssText='width:130px;padding:3px 6px;font-size:12px;'
+      ;[['','bundesweit'],...Object.entries(DE_LAENDER)].forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;if((data.region||'')===k)o.selected=true;rs.appendChild(o)})
+      rs.onchange=()=>{state.dayMap[key]={...getDayData(key),region:rs.value};render()}
+      rr.appendChild(rs);cont.appendChild(rr)
+    }
+  }
+
+  // 10/4-Wochenendtausch manuell schalten (nur Sa/So mit Montage)
+  const ddDow=keyToDate(key).getDay()
+  if((ddDow===6||ddDow===0)&&(data.mode==='montage'||data.mode==='montage_reise')){
+    const lbl=document.createElement('label');lbl.className='dd-label';lbl.style.marginTop='6px'
+    const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!data.tausch
+    cb.onchange=()=>{state.dayMap[key]={...getDayData(key),tausch:cb.checked};render()}
+    lbl.appendChild(cb);lbl.appendChild(document.createTextNode('10/4: normaler Arbeitstag (keine Zuschläge)'))
+    cont.appendChild(lbl)
+  }
+
+  // Copy button
+  const sep2=document.createElement('hr');sep2.className='dd-sep';cont.appendChild(sep2)
+  const cpBtn=document.createElement('button');cpBtn.className='dd-copy-btn'
+  cpBtn.textContent='Diesen Tag kopieren'
+  cpBtn.onclick=(e)=>{e.stopPropagation();copyDay(key)}
+  cont.appendChild(cpBtn)
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function render(){
+  calcStundensatz()
+  document.getElementById('stundensatz').value=state.stundensatz.toFixed(2)
+  document.getElementById('stundensatz-label').textContent='Stundensatz (÷ '+(settings.teiler>0?settings.teiler:143)+')'
+  const {monat,jahr,grundgehalt,stundensatz,taggeld,zaTopfMax,zaTopfStart,urlaubsgeldAktiv,urlaubsgeldBetrag,extras}=state
+  const weeks=getWeeksOfMonth(monat,jahr)
+  const alleTage=berechneMonat(weeks,state.dayMap)
+  const ruhe=verteileAbwesenheit(alleTage,state.ruheStart)
+  const lz=berechneLohnzettel(alleTage,grundgehalt,stundensatz,taggeld,zaTopfMax,zaTopfStart,urlaubsgeldAktiv,urlaubsgeldBetrag,extras)
+  state._last={zaTopfEnde:lz.zaTopfEnde,ruheEnde:ruhe.ruheEnde}
+  const lzM=monat===12?1:monat+1,lzJ=monat===12?jahr+1:jahr
+
+  document.getElementById('lz-label').textContent='Lohnzettel gilt für: '+MONATE[lzM-1]+' '+lzJ
+  document.getElementById('lz-label2').textContent=MONATE[lzM-1]+' '+lzJ
+  document.getElementById('cal-title').textContent='Kalender — '+MONATE[monat-1]+' '+jahr
+  document.getElementById('cal-hdr').innerHTML='<div></div>'+WT_ISO.map((d,i)=>`<div class="cal-hdr-cell${i>=5?' we':''}">${d}</div>`).join('')
+
+  const grid=document.getElementById('cal-grid');grid.innerHTML=''
+  weeks.forEach(week=>{
+    const real=week.filter(d=>d!==null)
+    const kw=real.length>0?getISOWeek(real[0]):''
+    const row=document.createElement('div');row.className='cal-row'
+    const kwCell=document.createElement('div');kwCell.className='kw-cell';kwCell.textContent=kw;row.appendChild(kwCell)
+    for(let di=0;di<7;di++){
+      const isoDay=di+1
+      const date=week.find(d=>{if(!d)return false;const dow=d.getDay();return(dow===0?7:dow)===isoDay})
+      const wrap=document.createElement('div')
+      if(!date){wrap.style.height='50px';row.appendChild(wrap);continue}
+      const key=dateKey(date),dd=getDayData(key)
+      const dow=date.getDay(),isSa=dow===6,isSo=dow===0
+      const fdt=dayFeiertag(date,dd),ft=fdt.ft,ftName=fdt.name
+      const isOpen=state.openKey===key
+      const isPasteMode=state.clipboard!==null
+      const isPlaceMode=!!state.place
+
+      let cls='day-btn'
+      if(dd.mode==='montage'||dd.mode==='montage_reise'){
+        cls+=dd.mode==='montage_reise'?' reise':' montage'
+        if(dd.tausch&&(isSa||isSo)){} // 10/4: normaler Arbeitstag
+        else if(isSo||ft)cls+=' so'; else if(isSa)cls+=' sa'
+      } else if(dd.mode==='buero'){cls+=' buero';if(ft&&!isSo&&!isSa)cls+=' ft'}
+      else if(dd.mode==='homeoffice'){cls+=' homeoffice';if(ft&&!isSo&&!isSa)cls+=' ft'}
+      else if(dd.mode==='za')cls+=' za'
+      else if(dd.mode==='ruhe')cls+=' ruhe'
+      else{if(ft&&!isSo&&!isSa)cls+=' feiertag'}
+      if(isOpen)cls+=' open'
+      if((isPasteMode||isPlaceMode)&&!isOpen)cls+=' paste-target'
+
+      const btn=document.createElement('button');btn.className=cls;btn.title=ftName||'';btn.dataset.key=key
+      const dnum=document.createElement('span');dnum.className='dnum';dnum.textContent=date.getDate()
+      const dinfo=document.createElement('span');dinfo.className='dinfo'
+      if(dd.mode==='frei') dinfo.textContent='—'
+      else if(dd.mode==='buero') dinfo.textContent='Büro '+dd.stunden+'h'
+      else if(dd.mode==='homeoffice') dinfo.textContent='HO '+dd.stunden+'h'
+      else if(dd.mode==='za') dinfo.textContent='ZA '+dd.stunden+'h'
+      else if(dd.mode==='ruhe') dinfo.textContent='Ruhe '+dd.stunden+'h'
+      else{const fz=dd.fahrzeit>0?'+'+dd.fahrzeit+'h R':'';dinfo.textContent=dd.stunden+'h'+(fz?' '+fz:'')}
+      btn.appendChild(dnum);btn.appendChild(dinfo)
+      if(isMontageMode(dd.mode)&&dd.land&&dd.land!=='AT'){const lm=document.createElement('span');lm.className='lmark';lm.textContent=landLabel(dd.land,dd.region);btn.appendChild(lm);btn.title=(ftName?ftName+' · ':'')+'Montage in '+LAENDER[dd.land]+(dd.land==='DE'&&dd.region?' ('+DE_LAENDER[dd.region]+')':'')}
+      if(ftName){const b=document.createElement('span');b.className='dbadge';b.textContent=ftName;btn.appendChild(b)}
+      else if(dd.mode==='homeoffice'){const b=document.createElement('span');b.className='dbadge';b.textContent='+€1';btn.appendChild(b)}
+      else if(isPasteMode){const b=document.createElement('span');b.className='dbadge';b.style.color='var(--accent)';b.textContent='→ Einfügen';btn.appendChild(b)}
+      else if(isPlaceMode){const b=document.createElement('span');b.className='dbadge';b.style.color='var(--accent)';b.textContent='Start hier';btn.appendChild(b)}
+      else if(dd.tausch&&(isSa||isSo)&&(dd.mode==='montage'||dd.mode==='montage_reise')){const b=document.createElement('span');b.className='dbadge';b.textContent='normaler Tag';btn.appendChild(b)}
+      else if(dd.tausch&&dd.mode==='frei'&&!isSa&&!isSo){const b=document.createElement('span');b.className='dbadge';b.textContent='Tausch';btn.appendChild(b)}
+      else if(isSo&&dd.mode!=='frei'&&dd.mode!=='za'&&dd.mode!=='ruhe'){const b=document.createElement('span');b.className='dbadge';b.textContent='+Ruhezeit';btn.appendChild(b)}
+
+      btn.onclick=(e)=>{
+        e.stopPropagation()
+        if(isPlaceMode){
+          placeModel(date)
+        } else if(isPasteMode){
+          pasteDay(key)
+          // stay in paste mode so user can paste to more days
+        } else {
+          openDD(key,btn)
+        }
+      }
+      if(isPlaceMode){
+        // Vorschau: welche Tage der Durchgang belegt
+        btn.onmouseenter=()=>{
+          const {seq}=state.place
+          for(let i=0;i<seq.length;i++){
+            const k=dateKey(new Date(date.getFullYear(),date.getMonth(),date.getDate()+i))
+            const el=grid.querySelector('[data-key="'+k+'"]');if(el)el.classList.add(seq[i]?'pv-on':'pv-off')
+          }
+        }
+        btn.onmouseleave=()=>grid.querySelectorAll('.pv-on,.pv-off').forEach(el=>el.classList.remove('pv-on','pv-off'))
+      }
+      wrap.appendChild(btn);row.appendChild(wrap)
+    }
+    grid.appendChild(row)
+  })
+
+  // Lohnzettel table
+  let rows=''
+  const addRow=(la,bez,ein,satz,betrag)=>{rows+=`<tr><td class="mono">${la}</td><td>${bez}</td><td class="r">${ein}</td><td class="r">${satz}</td><td class="r" style="font-weight:500;">${fmt(betrag)} €</td></tr>`}
+  addRow('1000','Grundgehalt','—','—',lz.grundgehalt)
+  if(lz.ue50Std>0) addRow('1500','04* ÜStd. 50% Zuschlag (Samstag)',fmtH(lz.ue50Std)+' h',fmt(lz.stundensatz*0.5)+' €/h',lz.ue50B)
+  if(lz.ue68_1Std>0) addRow('1520','ÜStd. 100% §68/1 (Sonntag)',fmtH(lz.ue68_1Std)+' h',fmt(lz.stundensatz)+' €/h',lz.ue68_1B)
+  if(lz.ue68_2Std>0) addRow('1530','ÜStd. 100% §68/2 (Feiertag / über 10h)',fmtH(lz.ue68_2Std)+' h',fmt(lz.stundensatz)+' €/h',lz.ue68_2B)
+  if(lz.ueGrundStdBase>0) addRow('1590','ÜStd. Grundvergütung',fmtH(lz.ueGrundStdBase)+' h',fmt(lz.stundensatz)+' €/h',r(lz.ueGrundStdBase*lz.stundensatz))
+  if(lz.zaUeberlauf>0) addRow('1591','Grundverg. ZA-Überlauf (Topf voll)',fmtH(lz.zaUeberlauf)+' h',fmt(lz.stundensatz)+' €/h',r(lz.zaUeberlauf*lz.stundensatz))
+  if(lz.zaUeberlauf>0) addRow('1592','50% Zuschlag ZA-Überlauf',fmtH(lz.zaUeberlauf)+' h',fmt(lz.stundensatz*0.5)+' €/h',lz.zaUeberlaufZuschlagB)
+  if(lz.onSiteStd>0) addRow('1641','On-Site Zulage (Arbeitsstd.)',fmtH(lz.onSiteStd)+' h','1,40 €',lz.onSiteB)
+  if(lz.taggelder>0) addRow('5040','Taggeld Ausland',lz.taggelder+' Tage',fmt(lz.taggeld)+' €',lz.tgB)
+  if(lz.lkStd>0) addRow('5550','Lenkzeit-Zulage 50%',fmtH(lz.lkStd)+' h',fmt(lz.stundensatz)+' €/h',lz.lkB)
+  if(lz.hoTage>0) addRow('9010','Homeoffice-Pauschale',lz.hoTage+' Tage','1,00 €',lz.hoPauschale)
+  if(lz.ugBrutto>0) addRow('8000','Urlaubsgeld (§67 EStG)','—','—',lz.ugBrutto)
+  ;(lz.extrasCalc||[]).forEach((ex,i)=>{
+    if(ex.brutto>0){
+      const steuerLabel=ex.steuer==='steuerfrei'?'steuerfrei':ex.steuer==='begunstigt'?'§67 begünstigt':'stpfl.'
+      addRow('9'+(100+i),''+( ex.name||'Prämie/Zulage')+' ('+steuerLabel+')','—','—',ex.brutto)
+    }
+  })
+  document.getElementById('lz-table').innerHTML=`<table><thead><tr><th style="width:50px;">Lohnart</th><th>Bezeichnung</th><th class="r">Einheiten</th><th class="r">Satz</th><th class="r">Betrag</th></tr></thead><tbody>${rows}</tbody></table>`
+
+  // ── ZA-Topf Gauge (in Grunddaten card) ────────────────────────────────────
+  const gaugeWrap=document.getElementById('za-gauge-wrap')
+  if(gaugeWrap){
+    const saldo=lz.zaTopfSaldo,ende=lz.zaTopfEnde,max=lz.zaTopfMax,ueberlauf=lz.zaUeberlauf
+    const pct=max>0?Math.min(100,Math.max(0,(Math.max(0,ende)/max)*100)):0
+    const isNegSaldo=saldo<0,isOver=ueberlauf>0
+    const barColor=isNegSaldo?'var(--neg)':isOver?'var(--accent)':'var(--text)'
+    const labelColor=isNegSaldo?'var(--neg)':isOver?'var(--accent)':'var(--text)'
+    const neuSign=lz.zaTopfNeu>=0?'+':''
+    gaugeWrap.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;flex-wrap:wrap;gap:4px;">
+        <span style="font-size:12px;color:var(--muted);">
+          Saldo Ende Monat: <strong style="color:${labelColor};">${saldo>=0?'+':''}${fmtH(saldo)} h</strong>
+          ${ueberlauf>0?`<span style="color:var(--accent);font-size:11px;"> (${fmtH(ueberlauf)} h Überlauf → Grundverg. + 50%)</span>`:''}
+        </span>
+        <span style="font-size:12px;color:var(--faint);">${max>0?fmtH(Math.max(0,ende))+' / '+fmtH(max)+' h':'kein Maximum'}</span>
+      </div>
+      <div style="height:10px;background:var(--sep);border-radius:999px;overflow:hidden;">
+        <div style="height:100%;width:${pct}%;background:${barColor};border-radius:999px;transition:width .3s;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px;flex-wrap:wrap;gap:2px;">
+        <span style="font-size:11px;color:var(--faint);">Start: ${fmtH(lz.zaTopfStart)} h &nbsp;|&nbsp; Monat: ${neuSign}${fmtH(lz.zaTopfNeu)} h</span>
+        <span style="font-size:11px;color:var(--faint);">${max>0?'Maximum: '+fmtH(max)+' h':''}</span>
+      </div>`
+  }
+
+  // ── Ruhezeit-Topf ─────────────────────────────────────────────────────────
+  {
+    const total=ruhe.ruheStart+ruhe.ruheNeu
+    const fillPct=total>0?Math.max(0,ruhe.ruheEnde)/total*100:0
+    const usedPct=total>0?Math.min(ruhe.ruheVerbrauch,total)/total*100:0
+    document.getElementById('ruhe-wrap').innerHTML=`<div class="pot">
+      <div class="pot-head">
+        <span class="pot-title">Verfügbar Ende ${MONATE[state.monat-1]}</span>
+        <span class="pot-val">${fmtH(ruhe.ruheEnde)}<small>h</small></span>
+      </div>
+      <div class="pot-bar"><div class="fill" style="width:${fillPct}%"></div><div class="used" style="width:${usedPct}%"></div></div>
+      ${total>0?`<div class="pot-legend"><span><i style="background:var(--accent)"></i>verfügbar</span><span><i style="background:var(--accent-line)"></i>genommen</span></div>`:''}
+      <div class="pot-flow">
+        <div><span>Start</span><b>${fmtH(ruhe.ruheStart)} h</b></div>
+        <div><span>+ Sonntagsarbeit</span><b class="pos">+${fmtH(ruhe.ruheNeu)} h</b></div>
+        <div><span>− genommen</span><b class="neg">−${fmtH(ruhe.ruheVerbrauch)} h</b></div>
+        <div><span>= Ende</span><b>${fmtH(ruhe.ruheEnde)} h</b></div>
+      </div>
+      <p class="pot-note">Jede Sonntagsstunde kommt 1:1 als Ruhezeit dazu. Bei ZA- und Ruhezeit-Tagen wird zuerst dieser Topf geleert, danach der ZA-Topf.</p>
+    </div>`
+  }
+
+  // ── Lehrling ──────────────────────────────────────────────────────────────
+  document.getElementById('lehrling-btn').classList.toggle('on',state.lehrling)
+  document.getElementById('grundgehalt-label').textContent=state.lehrling?'Lehrlingsentsch. (€/Mon)':'Grundgehalt (€/Mon)'
+  const lh=document.getElementById('lehrling-hint')
+  lh.style.display=state.lehrling?'block':'none'
+  lh.textContent='Lehrling: SV-Dienstnehmeranteil '+svLabel(lz.svR)+' (KV 1,67% + PV 10,25% + AV '+svLabel(avSatz(lz.svBasis))+', keine AK-Umlage / WBF). Lohnsteuer nach normalem Tarif. Unter 18 J. sind Überstunden laut KJBG grundsätzlich nicht erlaubt.'
+
+  // ── za-box unter Lohnzettel-Tabelle ───────────────────────────────────────
+  const zaEl=document.getElementById('za-box')
+  if(lz.zaTopfNeu!==0||ruhe.ruheNeu>0||ruhe.ruheVerbrauch>0){
+    zaEl.style.display='inline-flex'
+    zaEl.className='za-box '+(lz.zaTopfNeu<0?'neg':'pos')
+    const sign=lz.zaTopfNeu>=0?'+':''
+    let txt='Dieser Monat ZA: '+sign+fmtH(lz.zaTopfNeu)+' h'
+    if(lz.zaUeberlauf>0) txt+=' — Überlauf '+fmtH(lz.zaUeberlauf)+' h → Grundvergütung + 50% Zuschlag'
+    if(ruhe.ruheNeu>0||ruhe.ruheVerbrauch>0) txt+=' · Ruhezeit: +'+fmtH(ruhe.ruheNeu)+' h / −'+fmtH(ruhe.ruheVerbrauch)+' h'
+    zaEl.textContent=txt
+  } else zaEl.style.display='none'
+
+  function bnRow(lbl,val,bold,large,indent){
+    const neg=val<0,abs=Math.abs(val)
+    return`<div class="bn-row${indent?' indent':''}"><span class="bn-label${bold?' bold':''}${large?' large':''}">${lbl}</span><span class="bn-val${bold?' bold':''}${large?' large':''}${neg?' neg':''}">${neg?'−':''}${fmt(abs)} €</span></div>`
+  }
+  const extrasBlock=(lz.extrasCalc||[]).filter(e=>e.brutto>0).map(e=>{
+    const stLabel=e.steuer==='steuerfrei'?'steuerfrei':e.steuer==='begunstigt'?'§67 6%':'stpfl.'
+    return bnRow((e.name||'Prämie/Zulage')+' ('+stLabel+')',e.brutto,false,false,true)
+  }).join('')
+  const sub=t=>`<p style="font-size:11px;color:var(--faint);margin:0 0 4px;font-weight:500;">${t}</p>`
+  const note=t=>`<p style="font-size:11px;color:var(--faint);margin:0 0 4px 16px;">${t}</p>`
+  const andereBrutto=lz.ugBrutto>0||lz.extrasBruttoTotal>0
+  document.getElementById('bn-section').innerHTML=
+    bnRow('Brutto gesamt',lz.summeBrutto,true,true,false)+
+    (andereBrutto?
+      bnRow('davon laufende Bezüge',lz.lfdBrutto-lz.extrasLfd,false,false,true)+
+      (lz.ugBrutto>0?bnRow('davon Urlaubsgeld',lz.ugBrutto,false,false,true):'')+
+      (lz.extrasBruttoTotal>0?'<p style="font-size:11px;color:var(--faint);margin:4px 0 2px 16px;font-weight:500;">davon Prämien &amp; Zuschläge</p>'+extrasBlock:''):'')+
+    '<hr class="bn-sep">'+sub('Steuerfreie Bestandteile (lfd.)')+
+    (lz.tgB>0?bnRow('Taggeld (bis Satz je Land)',lz.tgFrei,false,false,true)+
+      (lz.tgStpfl>0?note('Taggeld über dem steuerfreien Satz: '+fmt(lz.tgStpfl)+' € → steuer- und SV-pflichtig'):''):'')+
+    (lz.topf68_1>0?bnRow('Sonn-/Feiertag §68/1 (max. 400 €)',lz.frei68_1,false,false,true)+
+      (lz.topf68_1>lz.frei68_1?note('von '+fmt(lz.topf68_1)+' € — Rest '+fmt(lz.topf68_1-lz.frei68_1)+' € steuerpflichtig'):''):'')+
+    (lz.topf68_2>0?bnRow('Überstundenzuschläge §68/2 (15 h, max. 170 €)',lz.frei68_2,false,false,true)+
+      (lz.topf68_2>lz.frei68_2?note('von '+fmt(lz.topf68_2)+' € ('+fmtH(lz.topf68_2Std)+' h) — Rest '+fmt(lz.topf68_2-lz.frei68_2)+' € steuerpflichtig'):''):'')+
+    (lz.hoFrei>0?bnRow('Homeoffice-Pauschale',lz.hoFrei,false,false,true):'')+
+    (lz.extrasFrei>0?bnRow('Steuerfreie Prämien',lz.extrasFrei,false,false,true):'')+
+    (lz.tgB+lz.topf68_1+lz.topf68_2+lz.hoFrei+lz.extrasFrei===0?note('keine'):'')+
+    '<hr class="bn-sep">'+bnRow('Stpfl. lfd. Brutto',lz.stpflB,false,false,false)+
+    '<p style="font-size:11px;color:var(--faint);margin:8px 0 4px;font-weight:500;">Abzüge lfd. Bezüge</p>'+
+    bnRow('SV-Beitrag '+svLabel(lz.svR)+(state.lehrling?' (Lehrling)':''),-lz.svB,false,false,true)+
+    (lz.svBasisRoh>lz.svBasis?note('gedeckelt bei der Höchstbeitragsgrundlage '+fmt(W.hbglMonat)+' €'):'')+
+    bnRow('Lohnsteuer (Tarif 2026)',-lz.ls,false,false,true)+
+    (lz.szBrutto>0?'<hr class="bn-sep">'+sub('Sonderzahlungen §67 EStG')+
+      (lz.ugBrutto>0?bnRow('Urlaubsgeld',lz.ugBrutto,false,false,true):'')+
+      (lz.extrasSZ>0?bnRow('§67-Prämien',lz.extrasSZ,false,false,true):'')+
+      bnRow('SV Sonderzahlung '+svLabel(lz.szSVR),-lz.szSV,false,false,true)+
+      bnRow('Lohnsteuer 6% (620 € frei)',-lz.szLS6,false,false,true)+
+      (lz.szUeber>0?bnRow('LS Teil über Jahressechstel',-lz.szLSUeber,false,false,true):'')+
+      note('Jahressechstel (Näherung 2 × Grundgehalt): '+fmt(lz.jahressechstel)+' €'):'')+
+    '<hr class="bn-sep strong">'+
+    bnRow('~ Netto gesamt (Schätzwert ±)',lz.netto,true,true,false)+
+    '<p style="font-size:11px;color:var(--faint);margin:8px 0 0;line-height:1.5;">Werte 2026: SV gedeckelt bei '+fmt(W.hbglMonat)+' €, Lohnsteuer-Tarif 2026 inkl. Verkehrsabsetzbetrag, Zuschläge steuerfrei nach §68 (400 € / 15 h bzw. 170 €), Taggeld bis zum Satz des Einsatzlandes. Pendlerpauschale, Familienbonus usw. sind nicht berücksichtigt — Näherungswerte.</p>'
+
+  // Detail table — alle Tage mit Eintrag, gruppiert nach Kalenderwoche mit Wochensumme
+  const detailTage=alleTage.filter(t=>t.gesamtStunden>0||t.abwStunden>0)
+  const detailCard=document.getElementById('detail-card')
+  if(detailTage.length===0){detailCard.style.display='none';return}
+  detailCard.style.display='block'
+  const COLS=[
+    {f:'gesamtStunden'},{f:'nazStunden'},{f:'zaTopfStunden',za:true},{f:'ruheNetto',ruhe:true},
+    {f:'ueStd50'},{f:'ueStd100_68_1'},{f:'ueStd100_68_2'},{f:'lenkzeit'}
+  ]
+  detailTage.forEach(t=>t.ruheNetto=t.ruheNeu-t.ruheVerbrauch)
+  const cell=(v,c,style)=>{
+    const base=`style="text-align:right;padding:${style==='row'?'4px':'5px'} 10px ${style==='row'?'4px':'5px'} 0;"`
+    if(Math.abs(v)<1e-9) return`<td class="detail-td" ${base}>—</td>`
+    const sign=(c.za||c.ruhe)&&v>0?'+':''
+    const cls=c.ruhe?'c-ruhe':c.za?(v<0?'c-neg':'c-pos'):''
+    return`<td class="detail-td ${cls}" ${base}><span style="${style!=='row'?'font-weight:600;':''}${cls?'':'color:var(--text);'}">${sign}${fmtH(v)}h</span></td>`
+  }
+  const sumOf=(arr,f)=>arr.reduce((s,t)=>s+t[f],0)
+  let drows=''
+  const kws=[...new Set(detailTage.map(t=>t.kw))]
+  kws.forEach(kw=>{
+    const wt=detailTage.filter(t=>t.kw===kw)
+    wt.forEach(t=>{
+      const dow=t.wochentag
+      let rc='detail-row'
+      if(t.isZA)rc+=' za'; else if(t.isRuhe)rc+=' ruhe'
+      else if(t.tausch){} // 10/4: Wochenende als normaler Arbeitstag
+      else if(dow===0||t.istFeiertag)rc+=' so'; else if(dow===6)rc+=' sa'
+      else if(t.isBuero)rc+=' buero'; else if(t.isHO)rc+=' homeoffice'
+      const dl=WT_LABEL[dow]+' '+String(t.datum.getDate()).padStart(2,'0')+'.'+(t.datum.getMonth()+1).toString().padStart(2,'0')+'.'
+      const ftTag=t.ftName?` <span style="font-size:10px;color:var(--accent);">${t.ftName}</span>`:''
+      const tauschLabel=t.tausch?' · 10/4: normaler Tag':''
+      let arbLabel=t.fahrzeit>0?`${t.arbStunden}h + ${t.fahrzeit}h Reise`:t.isBuero?`Büro ${t.arbStunden}h`:t.isHO?`HO ${t.arbStunden}h`:`Montage ${t.arbStunden}h`
+      if(t.isZA||t.isRuhe){
+        arbLabel=(t.isZA?'ZA ':'Ruhezeit ')+fmtH(t.abwStunden)+'h'
+        const teile=[]
+        if(t.ruheVerbrauch>0)teile.push(fmtH(t.ruheVerbrauch)+'h aus Ruhezeit')
+        if(t.zaTopfStunden<0)teile.push(fmtH(-t.zaTopfStunden)+'h aus ZA')
+        if(teile.length)arbLabel+=' · '+teile.join(' + ')
+      }
+      drows+=`<tr class="${rc}"><td style="padding:4px 12px 4px 0;font-size:12px;font-weight:500;white-space:nowrap;">${dl}${ftTag}<br><span style="font-size:10px;color:var(--muted);font-weight:400;">${arbLabel}${tauschLabel}</span></td>${COLS.map(c=>cell(t[c.f],c,'row')).join('')}</tr>`
+    })
+    drows+=`<tr class="week-row"><td style="padding:5px 12px 5px 0;">KW ${kw} Summe</td>${COLS.map(c=>cell(sumOf(wt,c.f),c,'sum')).join('')}</tr>`
+  })
+  const hdr=['Tag','Gesamt','NAZ','ZA-Topf','Ruhezeit','ÜSt 50%','ÜSt §68/1','ÜSt §68/2','Lenkzeit']
+  document.getElementById('detail-table').innerHTML=`<table style="font-size:12px;"><thead><tr>${hdr.map((h,i)=>`<th${i?' class="r"':''}>${h}</th>`).join('')}</tr></thead><tbody>${drows}</tbody><tfoot><tr style="border-top:2px solid var(--border);"><td style="padding:6px 12px 6px 0;font-weight:600;">Monat gesamt</td>${COLS.map(c=>cell(sumOf(detailTage,c.f),c,'sum')).join('')}</tr></tfoot></table>`
+}
+
+// ── Arbeitsmodell (z.B. 5/2, 10/4): ein Durchgang ab angeklicktem Tag ────────
+// seg: [[Arbeitstage, freie Tage], ...]  tausch: Sa/So im Block = normaler Arbeitstag, freie Tage ohne ZA-Abzug
+const MODELLE=[{l:'5/2',seg:[[5,2]]},{l:'10/4',seg:[[10,4]],tausch:true},{l:'6/1/4/3',seg:[[6,1],[4,3]],tausch:true}]
+function segText(seg){return seg.map(([a,f])=>a+' Tage Arbeit, '+f+' frei').join(' · ')}
+function getTurnus(){return{...DEFAULT_SETTINGS.turnus,...(settings.turnus||{})}}
+function renderPresets(){
+  const t=getTurnus(),row=document.getElementById('preset-row');row.innerHTML=''
+  const list=[...MODELLE,{l:'Eigenes '+t.customOn+'/'+t.customOff,seg:[[t.customOn,t.customOff]],tausch:false}]
+  list.forEach(m=>{
+    const b=document.createElement('button');b.className='preset'+(state.place&&state.place.l===m.l?' active':'');b.textContent=m.l
+    b.title=segText(m.seg)+' — danach Starttag im Kalender anklicken'
+    b.onclick=()=>startPlace(m);row.appendChild(b)
+  })
+}
+function startPlace(m){
+  if(state.place&&state.place.l===m.l){cancelPlace();return}
+  if(state.clipboard)clearCopy()
+  // seq: true = Arbeitstag, false = frei
+  const seq=[];m.seg.forEach(([a,f])=>{for(let i=0;i<a;i++)seq.push(true);for(let i=0;i<f;i++)seq.push(false)})
+  state.place={seq,l:m.l,tausch:!!m.tausch}
+  document.getElementById('place-label').textContent=m.l+' ('+segText(m.seg)+')'
+  document.getElementById('place-bar').classList.add('active')
+  renderPresets();render()
+}
+function cancelPlace(){state.place=null;document.getElementById('place-bar').classList.remove('active');renderPresets();render()}
+// Trägt genau einen Durchgang (on Arbeitstage + off freie Tage) ab startDate ein
+function placeModel(startDate){
+  const t=getTurnus(),{seq,tausch}=state.place
+  const ersterA=seq.indexOf(true),letzterA=seq.lastIndexOf(true)
+  let n=0,aussen=0
+  for(let i=0;i<seq.length;i++){
+    const date=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate()+i)
+    if(date.getMonth()!==state.monat-1||date.getFullYear()!==state.jahr){aussen++;continue}
+    let dd
+    if(seq[i]){
+      const reiseTag=t.reise&&(i===ersterA||i===letzterA)
+      dd=reiseTag?{mode:'montage_reise',stunden:t.reiseArbeit,fahrzeit:t.reisezeit}:{mode:'montage',stunden:t.stunden,fahrzeit:0}
+      dd.land=settings.land||'AT';dd.region=settings.region||''
+      if(tausch)dd.tausch=true
+    } else if(tausch){
+      // 10/4, 6/1/4/3: freie Tage ersetzen das gearbeitete Wochenende → kein ZA-Abzug
+      dd={mode:'frei',stunden:0,fahrzeit:0,tausch:true}
+    } else {
+      const naz=nazForDate(date)
+      dd=(t.za&&naz>0)?{mode:'za',stunden:naz,fahrzeit:0}:{mode:'frei',stunden:0,fahrzeit:0}
+    }
+    state.dayMap[dateKey(date)]=dd;n++
+  }
+  const l=state.place.l
+  state.place=null;document.getElementById('place-bar').classList.remove('active');renderPresets();render()
+  toast('Modell '+l+' eingetragen'+(aussen?' — '+aussen+' Tage liegen im nächsten Monat':''))
+}
+const T_NUM=['customOn','customOff','stunden','reiseArbeit','reisezeit'],T_BOOL=['reise','za']
+function syncTurnusPanel(){
+  const t=getTurnus()
+  T_NUM.forEach(k=>document.getElementById('t-'+k).value=t[k])
+  T_BOOL.forEach(k=>document.getElementById('t-'+k).checked=!!t[k])
+  document.getElementById('t-reise-fields').style.display=t.reise?'grid':'none'
+  renderPresets()
+}
+function readTurnusPanel(){
+  const t=getTurnus()
+  T_NUM.forEach(k=>{const v=parseFloat(document.getElementById('t-'+k).value);if(!isNaN(v))t[k]=k.startsWith('custom')?Math.max(k==='customOn'?1:0,Math.round(v)):Math.max(0,v)})
+  T_BOOL.forEach(k=>t[k]=document.getElementById('t-'+k).checked)
+  settings.turnus=t;persistSettings();syncTurnusPanel()
+}
+function syncLandRow(){
+  const ls=document.getElementById('land-sel'),rs=document.getElementById('region-sel')
+  if(!ls.options.length){
+    Object.entries(LAENDER).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;ls.appendChild(o)})
+    ;[['','bundesweit'],...Object.entries(DE_LAENDER)].forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;rs.appendChild(o)})
+  }
+  ls.value=settings.land||'AT';rs.value=settings.region||''
+  rs.style.display=ls.value==='DE'?'':'none'
+  const hint={CH:'Schweiz: nur landesweit übliche Feiertage – kantonale Feiertage bitte prüfen.',ES:'Spanien: nur landesweite Feiertage – regionale bitte prüfen.',AT:'Neue Montage-Tage bekommen dieses Land.'}
+  document.getElementById('land-hint').textContent=hint[ls.value]||'Feiertage des Einsatzlandes und Österreichs zählen beide.'
+}
+function setEinsatzland(){
+  settings.land=document.getElementById('land-sel').value
+  settings.region=settings.land==='DE'?document.getElementById('region-sel').value:''
+  persistSettings();syncLandRow()
+}
+function landAufMonat(){
+  let n=0
+  Object.keys(state.dayMap).forEach(k=>{const d=state.dayMap[k];if(isMontageMode(d.mode)){d.land=settings.land;d.region=settings.region;n++}})
+  render();toast(n?n+' Montage-Tage auf '+LAENDER[settings.land]+' gesetzt':'Keine Montage-Tage in diesem Monat')
+}
+function toggleTurnusOpts(){const o=document.getElementById('turnus-opts');o.style.display=o.style.display==='none'?'block':'none'}
+;[...T_NUM,...T_BOOL].forEach(k=>document.getElementById('t-'+k).addEventListener('change',readTurnusPanel))
+
+// ── Kalender leeren ──────────────────────────────────────────────────────────
+function clearCalendar(){
+  const n=Object.keys(state.dayMap).filter(k=>getDayData(k).mode!=='frei').length
+  if(!n){toast('Keine Einträge vorhanden');return}
+  if(!confirm('Alle '+n+' Einträge im '+MONATE[state.monat-1]+' '+state.jahr+' löschen?'))return
+  state.dayMap={}
+  if(state.clipboard)clearCopy()
+  if(state.place)cancelPlace()
+  closeDD()
+  toast(n+' Einträge gelöscht')
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+const monatSel=document.getElementById('monat')
+MONATE.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;if(i+1===state.monat)o.selected=true;monatSel.appendChild(o)})
+monatSel.onchange=()=>{state.monat=+monatSel.value;state.dayMap={};state.openKey=null;state.clipboard=null;document.getElementById('copy-bar').classList.remove('active');closeDD();render()}
+
+const jahrSel=document.getElementById('jahr')
+;[2024,2025,2026,2027,2028].forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;if(y===state.jahr)o.selected=true;jahrSel.appendChild(o)})
+jahrSel.onchange=()=>{state.jahr=+jahrSel.value;state.dayMap={};state.openKey=null;state.clipboard=null;document.getElementById('copy-bar').classList.remove('active');closeDD();render()}
+
+document.getElementById('grundgehalt').oninput=function(){state.grundgehalt=parseFloat(this.value)||0;render()}
+// Stundensatz = Grundgehalt / Stundenteiler (AT: 143) — wird automatisch berechnet
+function calcStundensatz(){const t=settings.teiler>0?settings.teiler:143;state.stundensatz=r(state.grundgehalt/t)}
+document.getElementById('taggeld').oninput=function(){state.taggeld=parseFloat(this.value)||0;render()}
+document.getElementById('zaTopfMax').oninput=function(){state.zaTopfMax=parseFloat(this.value)||0;render()}
+document.getElementById('zaTopfStart').oninput=function(){state.zaTopfStart=parseFloat(this.value)||0;render()}
+document.getElementById('urlaubsgeldAktiv').onchange=function(){
+  state.urlaubsgeldAktiv=this.checked
+  document.getElementById('urlaubsgeld-betrag-field').style.display=this.checked?'block':'none'
+  document.getElementById('urlaubsgeld-info').style.display=this.checked?'block':'none'
+  render()
+}
+document.getElementById('urlaubsgeldBetrag').oninput=function(){state.urlaubsgeldBetrag=parseFloat(this.value)||0;render()}
+
+document.getElementById('ruheStart').oninput=function(){state.ruheStart=parseFloat(this.value)||0;render()}
+
+function toggleLehrling(){state.lehrling=!state.lehrling;render()}
+
+// Eingabefelder aus dem State befüllen (nach Laden / Einstellungen)
+function syncInputs(){
+  monatSel.value=state.monat
+  if(![...jahrSel.options].some(o=>+o.value===state.jahr)){const o=document.createElement('option');o.value=state.jahr;o.textContent=state.jahr;jahrSel.appendChild(o)}
+  jahrSel.value=state.jahr
+  ;['grundgehalt','stundensatz','taggeld','zaTopfMax','zaTopfStart','ruheStart','urlaubsgeldBetrag'].forEach(id=>document.getElementById(id).value=state[id])
+  const ug=document.getElementById('urlaubsgeldAktiv');ug.checked=!!state.urlaubsgeldAktiv
+  document.getElementById('urlaubsgeld-betrag-field').style.display=ug.checked?'block':'none'
+  document.getElementById('urlaubsgeld-info').style.display=ug.checked?'block':'none'
+}
+
+// ── Modals / Toast ───────────────────────────────────────────────────────────
+function openModal(id){if(id==='ds-modal')renderDatasets();document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg.open').forEach(m=>m.classList.remove('open'))})
+let toastT=null
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200)}
+
+// ── Theme ────────────────────────────────────────────────────────────────────
+const THEME_ICONS={
+  auto:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor"/></svg>',
+  light:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  dark:'<svg class="ico" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'}
+const darkMQ=window.matchMedia('(prefers-color-scheme: dark)')
+function applyTheme(){
+  const t=settings.theme||'dark'
+  const dark=t==='dark'||(t==='auto'&&darkMQ.matches)
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light')
+  document.getElementById('theme-btn').innerHTML=THEME_ICONS[t]+{auto:'Auto',light:'Hell',dark:'Dunkel'}[t]
+}
+darkMQ.addEventListener?.('change',applyTheme)
+function persistSettings(){settings._saved=Date.now();try{localStorage.setItem('lzr_settings',JSON.stringify(settings))}catch(e){}}
+
+// ── Einstellungen fest in die HTML-Datei schreiben ───────────────────────────
+// Chrome/Edge: File System Access API (Datei einmal auswählen, Zugriff wird gemerkt).
+// Safari/Firefox: Download einer neuen HTML-Datei mit eingebetteten Einstellungen.
+function buildHtmlWithSettings(){
+  const json=JSON.stringify(settings).replace(/</g,'\\u003c')
+  return SOURCE_HTML.replace(/(<script id="embedded-settings" type="application\/json">)[\s\S]*?(<\/script>)/,(m,a,b)=>a+json+b)
+}
+function htmlFileName(){try{return decodeURIComponent(location.pathname.split('/').pop())||'gehaltspruefer.html'}catch(e){return'gehaltspruefer.html'}}
+function idbHandle(mode,val){
+  return new Promise((res,rej)=>{
+    const o=indexedDB.open('lzr',1)
+    o.onupgradeneeded=()=>o.result.createObjectStore('kv')
+    o.onerror=()=>rej(o.error)
+    o.onsuccess=()=>{const tx=o.result.transaction('kv',mode==='get'?'readonly':'readwrite'),st=tx.objectStore('kv')
+      const q=mode==='get'?st.get('fileHandle'):st.put(val,'fileHandle');q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)}
+  })
+}
+async function writeSettingsToHtml(){
+  const html=buildHtmlWithSettings()
+  if(window.showSaveFilePicker){
+    try{
+      let h=null
+      try{h=await idbHandle('get')}catch(e){}
+      if(h){
+        let perm=await h.queryPermission({mode:'readwrite'})
+        if(perm!=='granted')perm=await h.requestPermission({mode:'readwrite'})
+        if(perm!=='granted')h=null
+      }
+      if(!h){
+        h=await showSaveFilePicker({suggestedName:htmlFileName(),types:[{description:'HTML-Datei',accept:{'text/html':['.html']}}]})
+        try{await idbHandle('put',h)}catch(e){}
+      }
+      const w=await h.createWritable();await w.write(html);await w.close()
+      toast('Einstellungen fest in „'+h.name+'“ gespeichert')
+      return
+    }catch(e){
+      if(e&&e.name==='AbortError'){toast('Nur im Browser gespeichert (keine Datei gewählt)');return}
+      // sonst: Fallback auf Download
+    }
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=htmlFileName()
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+  toast('Neue HTML-Datei heruntergeladen – alte Datei damit ersetzen')
+}
+function cycleTheme(){settings.theme={auto:'light',light:'dark',dark:'auto'}[settings.theme||'dark'];persistSettings();applyTheme()}
+
+// ── Einstellungen ────────────────────────────────────────────────────────────
+const SET_NUM=['grundgehalt','teiler','taggeld','zaTopfMax','buero','bueroFr','ho','hoFr','montage','reiseArbeit','reisezeit']
+function fillSettingsForm(src){
+  SET_NUM.forEach(k=>document.getElementById('s-'+k).value=src[k])
+  document.getElementById('s-lehrling').checked=!!src.lehrling
+  document.getElementById('s-theme').value=src.theme||'auto'
+}
+function openSettings(){fillSettingsForm(settings);openModal('set-modal')}
+function resetSettings(){fillSettingsForm(DEFAULT_SETTINGS)}
+function saveSettings(){
+  SET_NUM.forEach(k=>{const v=parseFloat(document.getElementById('s-'+k).value);settings[k]=isNaN(v)?DEFAULT_SETTINGS[k]:v})
+  settings.lehrling=document.getElementById('s-lehrling').checked
+  settings.theme=document.getElementById('s-theme').value
+  persistSettings()
+  // Grunddaten sofort übernehmen
+  state.grundgehalt=settings.grundgehalt;state.taggeld=settings.taggeld
+  state.zaTopfMax=settings.zaTopfMax;state.lehrling=settings.lehrling
+  syncInputs();applyTheme();closeModal('set-modal');render()
+  if(document.getElementById('s-writeFile').checked)writeSettingsToHtml()
+  else toast('Einstellungen im Browser gespeichert')
+}
+
+// ── Datensätze ───────────────────────────────────────────────────────────────
+const DS_KEY='lzr_datasets'
+const DS_FIELDS=['monat','jahr','grundgehalt','taggeld','zaTopfMax','zaTopfStart','ruheStart','lehrling','urlaubsgeldAktiv','urlaubsgeldBetrag','extras','dayMap']
+function readDatasets(){try{return JSON.parse(localStorage.getItem(DS_KEY)||'[]')}catch(e){return[]}}
+function writeDatasets(list){try{localStorage.setItem(DS_KEY,JSON.stringify(list));return true}catch(e){toast('Speichern im Browser nicht möglich – bitte Datei-Export nutzen');return false}}
+function snapshot(){const o={v:1};DS_FIELDS.forEach(k=>o[k]=JSON.parse(JSON.stringify(state[k])));return o}
+function applySnapshot(d){
+  DS_FIELDS.forEach(k=>{if(d[k]!==undefined)state[k]=JSON.parse(JSON.stringify(d[k]))})
+  state.extras=state.extras||[];state.dayMap=state.dayMap||{}
+  extraIdCounter=state.extras.reduce((m,e)=>Math.max(m,e.id||0),0)
+  state.openKey=null;state.clipboard=null;document.getElementById('copy-bar').classList.remove('active')
+  document.getElementById('dropdown').style.display='none';document.getElementById('overlay').style.display='none'
+  syncInputs();renderExtrasList();render()
+}
+function escapeHtml(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderDatasets(){
+  const list=readDatasets(),el=document.getElementById('ds-list')
+  document.getElementById('ds-name').value=document.getElementById('ds-name').value||MONATE[state.monat-1]+' '+state.jahr
+  if(!list.length){el.innerHTML='<p class="hint">Noch keine Datensätze gespeichert.</p>';return}
+  el.innerHTML=list.map((d,i)=>`<div class="ds-item"><div><div class="ds-name">${escapeHtml(d.name)}</div><div class="ds-meta">${MONATE[d.data.monat-1]} ${d.data.jahr} · gespeichert ${new Date(d.saved).toLocaleString('de-AT',{dateStyle:'short',timeStyle:'short'})}</div></div><div style="display:flex;gap:6px;"><button class="btn small primary" onclick="loadDataset(${i})">Laden</button><button class="btn small danger" onclick="deleteDataset(${i})">Löschen</button></div></div>`).join('')
+}
+function saveDataset(){
+  const name=document.getElementById('ds-name').value.trim()||MONATE[state.monat-1]+' '+state.jahr
+  const list=readDatasets(),idx=list.findIndex(d=>d.name===name)
+  if(idx>=0&&!confirm('„'+name+'“ überschreiben?'))return
+  const entry={name,saved:Date.now(),data:snapshot()}
+  if(idx>=0)list[idx]=entry;else list.unshift(entry)
+  if(writeDatasets(list)){renderDatasets();toast('„'+name+'“ gespeichert')}
+}
+function loadDataset(i){const d=readDatasets()[i];if(!d)return;applySnapshot(d.data);document.getElementById('ds-name').value=d.name;closeModal('ds-modal');toast('„'+d.name+'“ geladen')}
+function deleteDataset(i){const list=readDatasets();if(!list[i]||!confirm('„'+list[i].name+'“ löschen?'))return;list.splice(i,1);writeDatasets(list);renderDatasets()}
+function exportJSON(){
+  const name=(document.getElementById('ds-name').value.trim()||MONATE[state.monat-1]+' '+state.jahr)
+  const blob=new Blob([JSON.stringify({name,saved:Date.now(),data:snapshot()},null,2)],{type:'application/json'})
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Lohnzettel_'+name.replace(/[^\wäöüÄÖÜß-]+/g,'_')+'.json'
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+}
+function importJSON(inp){
+  const f=inp.files[0];if(!f)return
+  const rd=new FileReader()
+  rd.onload=()=>{
+    try{const j=JSON.parse(rd.result);const data=j.data||j;if(!data.monat||!data.jahr)throw 0
+      applySnapshot(data);if(j.name)document.getElementById('ds-name').value=j.name
+      closeModal('ds-modal');toast('Datei importiert')}
+    catch(e){toast('Datei konnte nicht gelesen werden')}
+    inp.value=''
+  }
+  rd.readAsText(f)
+}
+function nextMonth(){
+  const last=state._last||{zaTopfEnde:state.zaTopfStart,ruheEnde:state.ruheStart}
+  state.zaTopfStart=last.zaTopfEnde;state.ruheStart=last.ruheEnde
+  if(state.monat===12){state.monat=1;state.jahr++}else state.monat++
+  state.dayMap={};state.urlaubsgeldAktiv=false
+  applySnapshot(snapshot());closeModal('ds-modal')
+  toast('Neuer Monat: '+MONATE[state.monat-1]+' '+state.jahr)
+}
+
+document.getElementById('app-version').textContent='v'+APP_VERSION
+applyTheme()
+syncInputs()
+syncTurnusPanel()
+syncLandRow()
+renderExtrasList()
+render()
+</script>
+</body>
+</html>

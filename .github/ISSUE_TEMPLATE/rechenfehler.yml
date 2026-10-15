@@ -1,0 +1,37 @@
+name: Rechenfehler
+description: Ein Wert im Rechner weicht vom echten Lohnzettel ab
+title: "[Rechenfehler] "
+labels: ["rechenfehler"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke fürs Melden! Bitte **keine personenbezogenen Daten** (Name, Personalnummer, Arbeitgeber) einfügen.
+  - type: input
+    id: monat
+    attributes:
+      label: Monat / Jahr
+      placeholder: z. B. Oktober 2026
+    validations:
+      required: true
+  - type: textarea
+    id: abweichung
+    attributes:
+      label: Was weicht ab?
+      description: Welche Zeile, welcher Wert im Rechner und welcher laut echtem Lohnzettel?
+      placeholder: |
+        Zeile: Lohnsteuer
+        Rechner: 534,28 €
+        Lohnzettel: 520,10 €
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Wie war der Monat aufgebaut?
+      description: Arbeitsmodell, Einsatzland, Besonderheiten (Lehrling, Urlaubsgeld …). Ein exportierter Datensatz (.json) hilft am meisten.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Steht unten im Rechner, z. B. v1.0.0
