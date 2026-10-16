@@ -22,6 +22,6 @@ npm test        # Rechen-Tests
 - **Eine Datei, keine Abhängigkeiten:** Keine externen Skripte, Schriften oder Frameworks in `index.html`.
 - **Rechenwerte mit Quelle:** Neue oder geänderte gesetzliche Werte (SV, Lohnsteuer, Taggeld …) bitte mit Quelle im Pull Request angeben und im Objekt `W` bzw. `TAGGELD_FREI` pflegen.
 - **Tests:** Änderungen an der Berechnung brauchen einen passenden Test in [`tests/rechnung.test.mjs`](tests/rechnung.test.mjs).
-- **Design:** schlicht, Hell- und Dunkelmodus, keine Emojis.
+- **Design:** nach dem PRH Design Kit – nur `--pr-`-Farbwerte, Dunkelrot als einziger Akzent, Hell- und Dunkelmodus prüfen, keine Emojis.
 - **Datenschutz:** Der Block `embedded-settings` in `index.html` muss im Repository immer `{}` bleiben.
 - **Changelog:** Nennenswerte Änderungen unter *Unreleased* in [`CHANGELOG.md`](CHANGELOG.md) eintragen.

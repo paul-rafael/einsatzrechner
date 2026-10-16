@@ -2,6 +2,14 @@
 
 Alle wichtigen Änderungen an diesem Projekt. Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.1.0] – 2026-10-16
+
+### Geändert
+- Gestaltung nach dem PRH Design Kit: Kopfzeile mit Signatur, Hero, Panels, Anleitung und Fußzeile
+- Heller Modus als Standard, dunkler Modus automatisch nach Systemeinstellung
+- Farben ausschließlich Schwarz/Weiß mit Dunkelrot als einzigem Akzent
+- Bessere Darstellung auf dem Handy
+
 ## [1.0.0] – 2026-10-16
 
 Erste Version.
@@ -16,9 +24,9 @@ Erste Version.
 - Stundensatz automatisch als Grundgehalt ÷ 143
 - Datensätze speichern, laden, exportieren und importieren
 - Einstellungen mit Standard-Stunden je Tagesart, optional fest in der Datei gespeichert
-- Schlichtes, dunkles Design; heller Modus optional
 
 ### Qualität
 - Rechen-Tests und statische Prüfungen über GitHub Actions
 
+[1.1.0]: https://github.com/paul-rafael/gehaltspruefer/releases/tag/v1.1.0
 [1.0.0]: https://github.com/paul-rafael/gehaltspruefer/releases/tag/v1.0.0
